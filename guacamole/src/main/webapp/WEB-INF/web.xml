@@ -1,58 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-   Copyright (C) 2013 Glyptodon LLC
-
-   Permission is hereby granted, free of charge, to any person obtaining a copy
-   of this software and associated documentation files (the "Software"), to deal
-   in the Software without restriction, including without limitation the rights
-   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-   copies of the Software, and to permit persons to whom the Software is
-   furnished to do so, subject to the following conditions:
-
-   The above copyright notice and this permission notice shall be included in
-   all copies or substantial portions of the Software.
-
-   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-   THE SOFTWARE.
--->
 <web-app version="2.5"
-         xmlns="http://java.sun.com/xml/ns/javaee"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
-                             http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+						http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
-    <!-- Basic config -->
-    <welcome-file-list>
-        <welcome-file>index.html</welcome-file>
-    </welcome-file-list>
+	<!-- Basic config -->
+	<welcome-file-list>
+		<welcome-file>ecoCloud.html</welcome-file>
+	</welcome-file-list>
+	<session-config>
+        	<session-timeout>60</session-timeout>
+	</session-config>
 
-    <!-- Guice -->
-    <filter>
-        <filter-name>guiceFilter</filter-name>
-        <filter-class>com.google.inject.servlet.GuiceFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>guiceFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
 
-    <listener>
-        <listener-class>org.glyptodon.guacamole.net.basic.BasicServletContextListener</listener-class>
-    </listener>
+	<!-- Guice -->
+    	<filter>
+        	<filter-name>guiceFilter</filter-name>
+	        <filter-class>com.google.inject.servlet.GuiceFilter</filter-class>
+    	</filter>
+    	<filter-mapping>
+        	<filter-name>guiceFilter</filter-name>
+        	<url-pattern>/*</url-pattern>
+    	</filter-mapping>
 
-    <!-- Audio file mimetype mappings -->
-    <mime-mapping>
-        <extension>mp3</extension>
-        <mime-type>audio/mpeg</mime-type>
-    </mime-mapping>
-    <mime-mapping>
-        <extension>ogg</extension>
-        <mime-type>audio/ogg</mime-type>
-    </mime-mapping>
+    	<listener>
+        	<listener-class>org.glyptodon.guacamole.net.basic.BasicServletContextListener</listener-class>
+    	</listener>
 
+
+    <!-- Automatically detect and load WebSocket support -->
+    <!--<listener>
+        <listener-class>org.glyptodon.guacamole.net.basic.WebSocketSupportLoader</listener-class>
+    </listener> -->	
+
+	<!-- Guacamole Tunnel Servlet -->
+	<servlet>
+		<description>Economatica Login</description>
+		<servlet-name>EcoLogin</servlet-name>
+		<servlet-class>org.glyptodon.guacamole.net.economatica.EconomaticaTunnelServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>EcoLogin</servlet-name>
+		<url-pattern>/ecoLogin</url-pattern>
+	</servlet-mapping>
+
+	<!-- Guacamole WebSocket Tunnel Servlet -->
+	<servlet>
+		<description>Economatica WebSocket</description>
+		<servlet-name>WebSocketTunnel</servlet-name>
+		<servlet-class>org.glyptodon.guacamole.net.economatica.EconomaticaTunnelWebSocketServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>WebSocketTunnel</servlet-name>
+		<url-pattern>/websocket-tunnel</url-pattern>
+	</servlet-mapping>
+
+
+     <!-- Clipboard State Servlet -->
+    <!--<servlet>
+        <description>Clipboard state servlet.</description>
+        <servlet-name>Clipboard</servlet-name>
+        <servlet-class>org.glyptodon.guacamole.net.basic.rest.clipboard.ClipboardRESTService</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Clipboard</servlet-name>
+        <url-pattern>/clipboard</url-pattern>
+    </servlet-mapping>-->
 </web-app>

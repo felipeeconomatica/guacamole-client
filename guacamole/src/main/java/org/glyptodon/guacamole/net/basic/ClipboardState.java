@@ -122,6 +122,7 @@ public class ClipboardState {
         mimetype = pending_mimetype;
         contents = new byte[pending_length];
         System.arraycopy(pending, 0, contents, 0, pending_length);
+        pending_length = 0;
 
         // Notify of update
         last_update = System.currentTimeMillis();
@@ -138,17 +139,19 @@ public class ClipboardState {
      */
     public synchronized boolean waitForContents(int timeout) {
 
-        // Wait for new contents if it's been a while
-        if (System.currentTimeMillis() - last_update > timeout) {
-            try {
-                this.wait(timeout);
-                return true;
-            }
-            catch (InterruptedException e) { /* ignore */ }
-        }
+        long elapsed = System.currentTimeMillis() - last_update;
+		if (elapsed > (timeout / 4)) {
 
-        return false;
-
+			long waitUntil = System.currentTimeMillis() + timeout;
+			do {
+                try {
+					this.wait(waitUntil - System.currentTimeMillis() + 1/*ms*/);
+                    elapsed = System.currentTimeMillis() - last_update;
+                }
+                catch (InterruptedException e) { /* ignore */ }
+			} while ((elapsed > timeout) && (System.currentTimeMillis() < waitUntil));
+		}
+		return (elapsed <= timeout);
     }
     
 }

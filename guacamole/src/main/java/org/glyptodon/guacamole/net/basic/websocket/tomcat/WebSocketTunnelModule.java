@@ -23,13 +23,21 @@
 package org.glyptodon.guacamole.net.basic.websocket.tomcat;
 
 import com.google.inject.servlet.ServletModule;
+
+import java.io.File;
+
+import org.glyptodon.guacamole.GuacamoleException;
+import org.glyptodon.guacamole.environment.Environment;
+import org.glyptodon.guacamole.environment.LocalEnvironment;
 import org.glyptodon.guacamole.net.basic.TunnelLoader;
+import org.glyptodon.guacamole.net.basic.extension.DirectoryClassLoader;
+import org.glyptodon.guacamole.net.economatica.EconomaticaTunnelWebSocketServlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * Loads the Jetty 9 WebSocket tunnel implementation.
- * 
+ *
  * @author Michael Jumper
  */
 public class WebSocketTunnelModule extends ServletModule implements TunnelLoader {
@@ -45,28 +53,36 @@ public class WebSocketTunnelModule extends ServletModule implements TunnelLoader
         try {
 
             // Attempt to find WebSocket servlet
-            Class.forName("org.glyptodon.guacamole.net.basic.websocket.tomcat.BasicGuacamoleWebSocketTunnelServlet");
+        	Class.forName("org.glyptodon.guacamole.net.economatica.EconomaticaTunnelWebSocketServlet");
 
-            // Support found
+        	logger.info("[WSTM.is] web socket support ok");
+
+        	// Support found
             return true;
 
         }
 
         // If no such servlet class, this particular WebSocket support
         // is not present
-        catch (ClassNotFoundException e) {}
-        catch (NoClassDefFoundError e) {}
+        catch (ClassNotFoundException e) {
+            logger.warn("[WSTM.is] class not found", e);
+        }
+        catch (NoClassDefFoundError e) {
+            logger.warn("[WSTM.is] no class def", e);
+        }
+
+        logger.error("[WSTM.is] web socket support not found!");
 
         // Support not found
         return false;
-        
+
     }
-    
+
     @Override
     public void configureServlets() {
 
         logger.info("Loading Tomcat 7 WebSocket support...");
-        serve("/websocket-tunnel").with(BasicGuacamoleWebSocketTunnelServlet.class);
+        serve("/websocket-tunnel").with(EconomaticaTunnelWebSocketServlet.class);
 
     }
 

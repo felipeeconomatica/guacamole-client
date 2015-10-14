@@ -27,6 +27,7 @@ import org.glyptodon.guacamole.net.basic.rest.auth.AuthTokenGenerator;
 import org.glyptodon.guacamole.net.basic.rest.auth.AuthenticationService;
 import org.glyptodon.guacamole.net.basic.rest.auth.SecureRandomAuthTokenGenerator;
 import org.glyptodon.guacamole.net.basic.rest.auth.TokenSessionMap;
+import org.glyptodon.guacamole.net.economatica.EconomaticaGuacamoleUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -68,8 +69,10 @@ public class RESTAuthModule extends AbstractModule {
 
         // Bind low-level services
         bind(AuthenticationService.class);
+        bind(EconomaticaGuacamoleUtils.class);
         bind(AuthTokenGenerator.class).to(SecureRandomAuthTokenGenerator.class);
 
+        logger.info("[RAM.c] added eco tunnel factory to guice");
     }
 
 }

@@ -342,11 +342,19 @@ Guacamole.Client = function(tunnel) {
 
     /**
      * Fired whenever the state of this Guacamole.Client changes.
-     * 
+     *
      * @event
      * @param {Number} state The new state of the client.
      */
     this.onstatechange = null;
+
+    /**
+     * Fired whenever users disconnects from server.
+     *
+     * @event
+     * @param {Number} reason The reason of disconnection.
+     */
+    this.ondisconnected = null;
 
     /**
      * Fired when the remote client sends a name update.
@@ -670,6 +678,16 @@ Guacamole.Client = function(tunnel) {
             var y = parseInt(parameters[6]);
 
             display.curveTo(layer, cp1x, cp1y, cp2x, cp2y, x, y);
+
+        },
+
+        "disconnected": function(parameters) {
+
+            var reason = parseInt(parameters[0]);
+
+            if (guac_client.ondisconnected) {
+                guac_client.ondisconnected(reason);
+            }
 
         },
 

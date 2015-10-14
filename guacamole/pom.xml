@@ -105,10 +105,11 @@
             </plugin>
 
             <!-- Pre-cache Angular templates with maven-angular-plugin -->
+            <!-- we don't use Angular... :-( 
             <plugin>
                 <groupId>com.keithbranton.mojo</groupId>
                 <artifactId>angular-maven-plugin</artifactId>
-                <version>0.3.2</version>
+                <version>0.3.4</version>
                 <executions>
                     <execution>
                         <phase>generate-resources</phase>
@@ -124,7 +125,7 @@
                     <prefix>app</prefix>
                 </configuration>
             </plugin>
-
+			-->
             <!-- JS/CSS Minification Plugin -->
             <plugin>
                 <groupId>com.samaxes.maven</groupId>

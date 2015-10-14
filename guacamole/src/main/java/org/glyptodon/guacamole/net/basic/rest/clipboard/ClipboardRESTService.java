@@ -22,11 +22,13 @@
 
 package org.glyptodon.guacamole.net.basic.rest.clipboard;
 
-import com.google.inject.Inject;
+import java.util.Date;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
+
 import org.glyptodon.guacamole.GuacamoleException;
 import org.glyptodon.guacamole.GuacamoleUnsupportedException;
 import org.glyptodon.guacamole.environment.Environment;
@@ -35,6 +37,8 @@ import org.glyptodon.guacamole.net.basic.GuacamoleSession;
 import org.glyptodon.guacamole.net.basic.rest.AuthProviderRESTExposure;
 import org.glyptodon.guacamole.net.basic.rest.auth.AuthenticationService;
 import org.glyptodon.guacamole.properties.BooleanGuacamoleProperty;
+
+import com.google.inject.Inject;
 
 /**
  * A REST service for reading the current contents of the clipboard.
@@ -59,7 +63,7 @@ public class ClipboardRESTService {
     /**
      * The amount of time to wait for clipboard changes, in milliseconds.
      */
-    private static final int CLIPBOARD_TIMEOUT = 250;
+    private static final int CLIPBOARD_TIMEOUT = 500;
 
     /**
      * Whether clipboard integration is enabled.
@@ -84,12 +88,21 @@ public class ClipboardRESTService {
             final ClipboardState clipboard = session.getClipboardState();
 
             // Send clipboard contents
+            Response response = null;
             synchronized (clipboard) {
-                clipboard.waitForContents(CLIPBOARD_TIMEOUT);
-                return Response.ok(clipboard.getContents(),
-                                   clipboard.getMimetype()).build();
+            	if (clipboard.waitForContents(CLIPBOARD_TIMEOUT)) {
+                    response = Response
+                    		.ok(clipboard.getContents(), clipboard.getMimetype())
+                    		.expires(new Date(0l)) // inibe cache no IE10 e anteriores
+                    		.build();
+            	} else {
+                    response = Response
+                    		.ok()
+                    		.expires(new Date(0l)) // inibe cache no IE10 e anteriores
+                    		.build();
+            	}
             }
-
+        	return response;
         }
 
         // Otherwise, inform not supported
