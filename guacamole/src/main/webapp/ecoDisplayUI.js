@@ -1,19 +1,20 @@
 /**
- * Este objeto foi copiado (e simplificado) em boa parte do c�digo do client do guacamole
+ * Este objeto foi copiado (e simplificado) em boa parte do código do client do guacamole
  * client-ui.js
 */
 var EcoDisplayUI = {
-	"clipboard_integration_enabled" : true,
-	"local_cursor"					: false,
-	"attachedClient"				: null,
-	"main"							: document.getElementById("main"),
-	"display"						: document.getElementById("display"),
-	"clipboard"                     : document.getElementById("clipbrd"),
+    "clipboard_integration_enabled" : true,
+    "local_cursor"                  : false,
+    "attachedClient"                : null,
+    "main"                          : document.getElementById("main"),
+    "display"                       : document.getElementById("display"),
+    // TODO este membro é necessário?
+    "clipboard"                     : document.getElementById("clipbrd"),
     "touchTextInput"                : document.getElementById("touchTextInput"),
-	"auto_fit"						: true,
-	"min_zoom"						: 1,
-	"max_zoom"						: 3,
-	"lastClipboardData"			: ""
+    "auto_fit"                      : true,
+    "min_zoom"                      : 1,
+    "max_zoom"                      : 3,
+    "lastClipboardData"         : ""
 };
 
 /**
@@ -22,40 +23,26 @@ var EcoDisplayUI = {
  *
  * @param {String} data The data to assign to the clipboard.
  */
-EcoDisplayUI.setClipboard = function (data) {
+EcoDisplayUI.setRemoteClipboard = function (data) {
 
-	if (this.attachedClient) {
+    if (this.attachedClient) {
 
-		if (data !== this.lastClipboardData) {
-			/*
-			 * 2015.08.20 18:04:33 marcelo: setTimeout()???
-			 * Durante o desenvolvimento aqui tinha um código assim...
-			 *
-			 * 		console.log(...);
-			 * 		this.attachedClient.setClipboard(data);
-			 *
-			 * ...mas quando tirou o console.log(), quebrou no IE10!
-			 *
-			 * O setTimeout() contorna esse problema.
-			 */
-			setTimeout(function(ctx, data){
-				return function() {
-					ctx.attachedClient.setClipboard(data);
-					ctx.lastClipboardData = data;
-				};
-			}(this, data), 0/*ms*/)
-		} else {
-			// não precisa mandar novamente o valor para o servidor remoto, o valor já está no clipboard do servidor
-		}
-	} else {
-		console.log('[ECO] edui.sc: unable to set clipboard data, no attached client');
-	}
+        if (data !== this.lastClipboardData) {
+            this.attachedClient.setClipboard(data);
+            this.lastClipboardData = data;
+        } else {
+            // não precisa mandar novamente o valor para o servidor remoto, o valor já está no clipboard do servidor
+        }
+    } else {
+        console.log('[ECO] edui.sc: unable to set clipboard data, no attached client');
+    }
 };
 
+// TODO esta função é necessária?
 EcoDisplayUI.showClipboard = function() {
-	if (this.clipboard.style.visibility == 'hidden') {
-		this.clipboard.style.visibility = 'visible';
-	}
+    if (this.clipboard.style.visibility == 'hidden') {
+        this.clipboard.style.visibility = 'visible';
+    }
 };
 
 EcoDisplayUI.showTouchTextInput = function () {
@@ -73,7 +60,7 @@ EcoDisplayUI.startAnimationTouchTextInput = function () {
     if (EcoGuacamole.ConexaoGuac.browser.isIPAD()){
         this.showTouchTextInput();
         clearTimeout(timeoutAnimation);
-        
+
         timeoutAnimation = setTimeout(EcoGuacamole.ConexaoGuac.display.hiddenTouchTextInput, 6000);
     }
 };
@@ -86,18 +73,18 @@ EcoDisplayUI.startAnimationTouchTextInput = function () {
  */
 EcoDisplayUI.setScale = function(new_scale) {
 
-	new_scale = Math.max(new_scale, this.min_zoom);
-	new_scale = Math.min(new_scale, this.max_zoom);
+    new_scale = Math.max(new_scale, this.min_zoom);
+    new_scale = Math.min(new_scale, this.max_zoom);
 
-	if (this.attachedClient) {
-		this.attachedClient.getDisplay().scale(new_scale);
-	}
-	// If at minimum zoom level, auto fit is ON
-	if (new_scale === EcoDisplayUI.min_zoom) {
-		this.main.style.overflow = "hidden";
-	} else {
-		this.main.style.overflow = "auto";
-	}
+    if (this.attachedClient) {
+        this.attachedClient.getDisplay().scale(new_scale);
+    }
+    // If at minimum zoom level, auto fit is ON
+    if (new_scale === EcoDisplayUI.min_zoom) {
+        this.main.style.overflow = "hidden";
+    } else {
+        this.main.style.overflow = "auto";
+    }
 };
 
 
@@ -107,29 +94,29 @@ EcoDisplayUI.setScale = function(new_scale) {
  */
 EcoDisplayUI.updateDisplayScale = function() {
 
-	// Determine whether display is currently fit to the screen
-	var guac = this.attachedClient;
-	var auto_fit = (guac.getDisplay().getScale() === this.min_zoom);
+    // Determine whether display is currently fit to the screen
+    var guac = this.attachedClient;
+    var auto_fit = (guac.getDisplay().getScale() === this.min_zoom);
 
-	// Calculate scale to fit screen
-	this.min_zoom = Math.min(
-		this.main.offsetWidth  / Math.max(guac.getDisplay().getWidth(), 1),
-		this.main.offsetHeight / Math.max(guac.getDisplay().getHeight(), 1)
-	);
+    // Calculate scale to fit screen
+    this.min_zoom = Math.min(
+        this.main.offsetWidth  / Math.max(guac.getDisplay().getWidth(), 1),
+        this.main.offsetHeight / Math.max(guac.getDisplay().getHeight(), 1)
+    );
 
-	// Calculate appropriate maximum zoom level
-	this.max_zoom = Math.max(this.min_zoom, 3);
+    // Calculate appropriate maximum zoom level
+    this.max_zoom = Math.max(this.min_zoom, 3);
 
-	// Clamp zoom level, maintain auto-fit
-	if (guac.getDisplay().getScale() < this.min_zoom || auto_fit) {
-		this.setScale(this.min_zoom);
+    // Clamp zoom level, maintain auto-fit
+    if (guac.getDisplay().getScale() < this.min_zoom || auto_fit) {
+        this.setScale(this.min_zoom);
 
-	} else if (guac.getDisplay().getScale() > this.max_zoom) {
-		this.setScale(this.max_zoom);
-	}
+    } else if (guac.getDisplay().getScale() > this.max_zoom) {
+        this.setScale(this.max_zoom);
+    }
 };
 
-/*
+/**
  * Attaches a Guacamole.Client to the client UI, such that Guacamole events
  * affect the UI, and local events affect the Guacamole.Client. If a client
  * is already attached, it is replaced.
@@ -138,62 +125,63 @@ EcoDisplayUI.updateDisplayScale = function() {
  */
 EcoDisplayUI.attach = function(guac) {
 
-	var that = this;
+    var that = this;
 
-	// If a client is already attached, ensure it is disconnected
-	if (this.attachedClient) {
-		this.attachedClient.disconnect();
-	}
-	// Store attached client
-	this.attachedClient = guac;
+    // If a client is already attached, ensure it is disconnected
+    if (this.attachedClient) {
+        this.attachedClient.disconnect();
+    }
+    // Store attached client
+    this.attachedClient = guac;
 
-	// Get display element
-	var guac_display = guac.getDisplay().getElement();
+    // Get display element
+    var guac_display = guac.getDisplay().getElement();
 
-	/*
-	 * Update the scale of the display when the client display size changes.
-	 */
+    /*
+     * Update the scale of the display when the client display size changes.
+     */
 
-	guac_display.onresize =
-		guac.getDisplay().onresize = function(width, height) {
-			setTimeout(function() {
-				that.updateDisplayScale();
-			}, 1000);
-		};
+    guac_display.onresize =
+        guac.getDisplay().onresize = function(width, height) {
+            setTimeout(function() {
+                that.updateDisplayScale();
+            }, 1000);
+        };
 
-	/*
-	 * Update UI when the state of the Guacamole.Client changes.
-	 */
+    /*
+     * Update UI when the state of the Guacamole.Client changes.
+     */
 
-	guac.onstatechange = function(clientState) {
+    guac.onstatechange = function(clientState) {
 
-		switch (clientState) {
+        switch (clientState) {
 
-			// Connected
-			case 3:
-				var clipboard = GuacamoleSessionStorage.getItem("clipboard");
-				if (clipboard) {
-					that.setClipboard(clipboard);
-				}
-				break;
+            // Connected
+            case 3:
+                var dados = GuacamoleSessionStorage.getItem("clipboard");
+                if (dados) {
+                    that.setRemoteClipboard(dados);
+                }
+                break;
 
-			default:
-				// Nada
+            default:
+                // Nada
 
-		}
-	};
+        }
+    };
 
-	guac_display.onclick = function(e) {
-		that.showClipboard();
-		that.clipboard.focus();
-		that.clipboard.select();
-	};
+    // TODO esta função é necessária?
+    guac_display.onclick = function(e) {
+        that.showClipboard();
+        that.clipboard.focus();
+        that.clipboard.select();
+    };
 
-	// Remove old client from UI, if any
-	this.display.innerHTML = "";
+    // Remove old client from UI, if any
+    this.display.innerHTML = "";
 
-	// Add client to UI
-	guac_display.className = "software-cursor";
-	this.display.appendChild(guac_display);
+    // Add client to UI
+    guac_display.className = "software-cursor";
+    this.display.appendChild(guac_display);
 
 };

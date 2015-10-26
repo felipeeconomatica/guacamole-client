@@ -312,6 +312,10 @@ EcoGuacamole.prototype = {
 			};
 			
 			this.guacKeyboard.onkeydown = function (keysym) {
+				
+				if (!isKeyEventsEnabled()) {
+					return false; 
+				}
 
 				var esperandoCtrlCdoCopyGrande = (
 					EcoGuacamole.ConexaoGuac.clip.isCopyGrande 

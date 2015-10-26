@@ -1,125 +1,125 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
-	<title>Eco Cloud</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<meta name="viewport" content="width = device-width, initial-scale = 1.0, user-scalable = yes, minimum-scale = 0.999, maximum-scale = 1.001" />
-	<meta name="apple-mobile-web-app-capable" content="yes" />
-	<meta name="application-name" content="Eco Cloud" />
-	<meta http-equiv="pragma" content="no-cache" />
-	<meta http-equiv="Cache-Control" content="no-cache" />
-	<meta name="robots" content="noindex, nofollow" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+    <title>Eco Cloud</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width = device-width, initial-scale = 1.0, user-scalable = yes, minimum-scale = 0.999, maximum-scale = 1.001" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="application-name" content="Eco Cloud" />
+    <meta http-equiv="pragma" content="no-cache" />
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta name="robots" content="noindex, nofollow" />
 
-	<style type="text/css">
+    <style type="text/css">
 body{
-	margin:0px;
-	padding:0px;
-	overflow: hidden;
+    margin:0px;
+    padding:0px;
+    overflow: hidden;
 }
 
 #display {
-	overflow: none;
+    overflow: none;
 }
 
 .software-cursor {
-	cursor: url('blank.gif'),url('blank.cur'),default;
-	overflow: hidden;
-	cursor: none;
+    cursor: url('blank.gif'),url('blank.cur'),default;
+    overflow: hidden;
+    cursor: none;
 }
 
 #msgBlock {
-	left:0px;
-	z-index: 9998;
-	top:0px;
-	width:100%;
-	height:100%;
-	background-color: #FFFFFF;
-	position: absolute;
-	-moz-user-select: -moz-none;
-	-khtml-user-select: none;
-	-webkit-user-select: none;
-	-o-user-select: none;
-	user-select: none;
+    left:0px;
+    z-index: 9998;
+    top:0px;
+    width:100%;
+    height:100%;
+    background-color: #FFFFFF;
+    position: absolute;
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+    user-select: none;
 }
 #msgDiv {
-	position: fixed;
-	z-index: 9999;
-	display: block;
-	top: 50%;
-	left: 50%;
-	width: 400px;
-	margin-left: -200px;
-	margin-top: -60px;
-	background-color: #D9DBDF;
-	overflow: hidden;
-	vertical-align: middle;
-	-moz-user-select: -moz-none;
-	-khtml-user-select: none;
-	-webkit-user-select: none;
-	-o-user-select: none;
-	user-select: none;
+    position: fixed;
+    z-index: 9999;
+    display: block;
+    top: 50%;
+    left: 50%;
+    width: 400px;
+    margin-left: -200px;
+    margin-top: -60px;
+    background-color: #D9DBDF;
+    overflow: hidden;
+    vertical-align: middle;
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+    user-select: none;
 }
 #msgTable {
-	padding-top: 15px;
-	padding-bottom: 15px;
-	padding-right: 10px;
-	width: 100%;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-right: 10px;
+    width: 100%;
 }
 #progressTable {
-	padding-top: 15px;
-	padding-bottom: 15px;
-	padding-right: 15px;
-	padding-left: 15px;
-	width: 100%;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-right: 15px;
+    padding-left: 15px;
+    width: 100%;
 }
 #msgTitle {
-	font-family: Arial;
-	font-size: 14px;
-	font-weight: bold;
-	vertical-align: bottom;
-	border-bottom: solid 2px #6A7898;
-	color: #4C4C4C;
+    font-family: Arial;
+    font-size: 14px;
+    font-weight: bold;
+    vertical-align: bottom;
+    border-bottom: solid 2px #6A7898;
+    color: #4C4C4C;
 }
 #msgLabel {
-	font-family: Arial;
-	font-size: 11px;
-	vertical-align: top;
-	color: #4C4C4C;
+    font-family: Arial;
+    font-size: 11px;
+    vertical-align: top;
+    color: #4C4C4C;
 }
 #msgText {
-	font-family: Arial;
-	font-size: 11px;
-	color: #000000;
-	vertical-align: top;
+    font-family: Arial;
+    font-size: 11px;
+    color: #000000;
+    vertical-align: top;
 }
 #msgLoader {
-	background: url(loader-big.gif) no-repeat center center;
-	width: 15%;
+    background: url(loader-big.gif) no-repeat center center;
+    width: 15%;
 }
 #touchTextInput{
-	autocorrect:off; 
-    autocomplete:off; 
-    autocapitalize:none; 
-    spellcheck:false; 
-    background:url(kbd.png) no-repeat left top; 
-	border:none; 
-    width:35px; 
-    height:35px; 
-    resize:none; 
-    color:rgba(0, 0, 0, 0); 
+    autocorrect:off;
+    autocomplete:off;
+    autocapitalize:none;
+    spellcheck:false;
+    background:url(kbd.png) no-repeat left top;
+    border:none;
+    width:35px;
+    height:35px;
+    resize:none;
+    color:rgba(0, 0, 0, 0);
     overflow: hidden;
     opacity:0.6;
-    z-index: 999; 
-    position: fixed; 
-    left: 440px; 
+    z-index: 999;
+    position: fixed;
+    left: 440px;
     top: 4px;
 }
 
 .pulse{
     animation-name: pulse;
-    -webkit-animation-name: pulse;    
-    animation-duration: 3s; 
+    -webkit-animation-name: pulse;
+    animation-duration: 3s;
     -webkit-animation-duration: 3s;
 
     animation-iteration-count: 6;
@@ -127,20 +127,20 @@ body{
 
     animation-timing-function: linear;
     -webkit-animation-timing-function: linear;
-    visibility: visible !important;         
+    visibility: visible !important;
 }
 
-@keyframes pulse { 
-	0% { opacity: 0.1 }
-	50% { opacity: 1 }
-	100% { opacity: 0.1 }
-} 
+@keyframes pulse {
+    0% { opacity: 0.1 }
+    50% { opacity: 1 }
+    100% { opacity: 0.1 }
+}
 
-@-webkit-keyframes pulse { 
-	0% { opacity: 0.1 }
-	50% { opacity: 1 }
-	100% { opacity: 0.1 }
-} 
+@-webkit-keyframes pulse {
+    0% { opacity: 0.1 }
+    50% { opacity: 1 }
+    100% { opacity: 0.1 }
+}
 
 /*
 ==============================================
@@ -157,15 +157,15 @@ justin@justinaguilar.com
 */
 .slideUp{
     animation-name: slideUp;
-    -webkit-animation-name: slideUp;    
+    -webkit-animation-name: slideUp;
 
-    animation-duration: 1s; 
+    animation-duration: 1s;
     -webkit-animation-duration: 1s;
 
-    animation-timing-function: ease;    
+    animation-timing-function: ease;
     -webkit-animation-timing-function: ease;
 
-    visibility: visible !important;         
+    visibility: visible !important;
 }
 
 @keyframes slideUp {
@@ -183,10 +183,10 @@ justin@justinaguilar.com
     }
     95%{
         transform: translateY(2%);
-    }           
+    }
     100% {
         transform: translateY(0%);
-    }   
+    }
 }
 
 @-webkit-keyframes slideUp {
@@ -204,365 +204,436 @@ justin@justinaguilar.com
     }
     95%{
         -webkit-transform: translateY(2%);
-    }           
+    }
     100% {
         -webkit-transform: translateY(0%);
-    }   
+    }
 }
-	</style>
+    </style>
 </head>
 <body>
 
-	<!--
-		Canvas - MainStage
-	-->
-	<div id="main" style="width:100%; height:100%">
-		<div id="stage" style="z-index:0;"></div>
+    <!--
+        Canvas - MainStage
+    -->
+    <div id="main" style="width:100%; height:100%">
+        <div id="stage" style="z-index:0;"></div>
 
-		<div id="display"></div>
+        <div id="display"></div>
 
-		<!--
-			Mensagens
-		-->
-		<div style="display:none" id="msgBlock"></div>
-		<div class='col-sm-4 invisible'>
-			<div class='panel panel-bordered mg-b'>
-				<div class='panel-body'></div>
-			</div>
-		</div>
-		<div id="msgDiv" style="display:none"></div>
+        <!--
+            Mensagens
+        -->
+        <div style="display:none" id="msgBlock"></div>
+        <div class='col-sm-4 invisible'>
+            <div class='panel panel-bordered mg-b'>
+                <div class='panel-body'></div>
+            </div>
+        </div>
+        <div id="msgDiv" style="display:none"></div>
 
-	</div>
+    </div>
 
-	<textarea id="clipbrd" style="position: fixed; z-index: -999999; width: 100px; height: 100px; left: -110px; top: -110px; visibility: hidden;">dummy data</textarea>
+    <textarea id="clipbrd" style="position: fixed; z-index: -999999; width: 100px; height: 100px; left: -110px; top: -110px; visibility: hidden;">dummy data</textarea>
     <input type="text" id="touchTextInput" style="display:none" class="pulse" />
-    
-	<input type="hidden" name="username" id="username" />
-	<input type="hidden" name="password" id="password" />
+
+    <input type="hidden" name="username" id="username" />
+    <input type="hidden" name="password" id="password" />
 
 
-	<script type="text/javascript" src="scripts/session.js"></script>
-	<script type="text/javascript" src="scripts/service.js"></script>
+    <script type="text/javascript" src="scripts/session.js"></script>
+    <script type="text/javascript" src="scripts/service.js"></script>
 
-	<script src="guacamole-common-js/all.js"></script>
-	<script src="base64.js"></script>
-	<script src="filesaver.js"></script>
-	<script src="sendFileToUser.js"></script>
-	<script src="ecoUtil.js"></script>
-	<script src="ecoDisplayUI.js"></script>
-	<script src="ecoMensagem.js"></script>
-	<script src="ecoBrowser.js"></script>
-	<script src="ecoClipboard.js"></script>
-	<script src="ecoGuacamole.js"></script>
+    <script src="guacamole-common-js/all.js"></script>
+    <script src="base64.js"></script>
+    <script src="filesaver.js"></script>
+    <script src="sendFileToUser.js"></script>
+    <script src="ecoUtil.js"></script>
+    <script src="ecoDisplayUI.js"></script>
+    <script src="ecoMensagem.js"></script>
+    <script src="ecoBrowser.js"></script>
+    <script src="ecoClipboard.js"></script>
+    <script src="ecoGuacamole.js"></script>
 
-	<script type="text/javascript">
+    <script type="text/javascript">
 
-	// ----------------------------------------------------------------
-	// -- Objetos e variáveis
-	// ----------------------------------------------------------------
-	var msg = new EcoMensagem(document.getElementById("msgBlock"),document.getElementById("msgDiv"));
+    // ----------------------------------------------------------------
+    // -- Objetos e variáveis
+    // ----------------------------------------------------------------
+    var msg = new EcoMensagem(document.getElementById("msgBlock"),document.getElementById("msgDiv"));
 
-	// Versão
-	var VERSION = window.location.pathname.match(/^\/([^\/]*)\//)[1];
-	msg.registraLog('Version {0}'.format(VERSION));
+    // Versão
+    var VERSION = window.location.pathname.match(/^\/([^\/]*)\//)[1];
+    msg.registraLog('Version {0}'.format(VERSION));
 
-	var browser = new EcoBrowser(msg, VERSION);
+    var browser = new EcoBrowser(msg, VERSION);
 
-	var clip = new EcoClipboard(msg, EcoDisplayUI, browser);
+    var clip = new EcoClipboard(msg, EcoDisplayUI, browser);
 
-	EcoGuacamole.ConexaoGuac = new EcoGuacamole(clip, msg, EcoDisplayUI, browser);
+    EcoGuacamole.ConexaoGuac = new EcoGuacamole(clip, msg, EcoDisplayUI, browser);
 
-	// ----------------------------------------------------------------
-	// ----------------------------------------------------------------
+    // ----------------------------------------------------------------
+    // ----------------------------------------------------------------
 
-	// ----------------------------------------------------------------
-	// -- Funções para Clipboard
-	// ----------------------------------------------------------------
-	EcoGuacamole.ConexaoGuac.onDepoisDeConectar = function() {
-		EcoDisplayUI.showClipboard();
-	};
+    // ----------------------------------------------------------------
+    // -- Funções para Clipboard
+    // ----------------------------------------------------------------
+    EcoGuacamole.ConexaoGuac.onDepoisDeConectar = function() {
+        EcoDisplayUI.showClipboard();
+    };
 
-	msg.onEventoForcaFoco = function () {
-		EcoDisplayUI.showClipboard();
-		EcoDisplayUI.clipboard.focus();
-		EcoDisplayUI.clipboard.select();
-	};
+    msg.onEventoForcaFoco = function () {
+        EcoDisplayUI.showClipboard();
+        EcoDisplayUI.clipboard.focus();
+        EcoDisplayUI.clipboard.select();
+    };
 
-	clip.handlerClipboardData = function() {
+    /**
+     * Obtem os dados contidos no clipboard do servidor remoto através do Guacamole.
+     *
+     * @returns {String} O conteúdo do clipboard do servidor remoto.
+     */
+    clip.handlerClipboardData = function() {
 
-		if (EcoDisplayUI.clipboard_integration_enabled === false) {
-			return "";
-		}
+        if (EcoDisplayUI.clipboard_integration_enabled === false) {
+            return "";
+        }
 
-		try {
-			var data = GuacamoleService.Clipboard.get("token=" + EcoGuacamole.ConexaoGuac.token.authToken);
-			EcoDisplayUI.clipboard_integration_enabled = true;
+        try {
+            var data = GuacamoleService.Clipboard.get("token=" + EcoGuacamole.ConexaoGuac.token.authToken);
+            EcoDisplayUI.clipboard_integration_enabled = true;
 
-			return data;
-		}
-		catch (status) {
-			EcoDisplayUI.clipboard_integration_enabled = false;
-			msg.registraLog("get_clipboard_data: " + status);
+            return data;
+        }
+        catch (status) {
+            EcoDisplayUI.clipboard_integration_enabled = false;
+            msg.registraLog("get_clipboard_data: " + status);
 
-			return "";
-		}
-	};
+            return "";
+        }
+    };
 
-	GuacamoleSessionStorage.addChangeListener(function(name, value) {
-		if (name === "clipboard") {
-			EcoDisplayUI.clipboard.value = (value && (value !== "") ? value : EcoClipboard.DUMMY_DATA);
-			EcoDisplayUI.setClipboard(value);
-		}
-	});
+    // TODO isto parece atualizar o textarea... ainda é usado? quando?
+    GuacamoleSessionStorage.addChangeListener(function(name, value) {
+        if (name === "clipboard") {
+            EcoDisplayUI.setRemoteClipboard(value);
+        }
+    });
 
-	if (!Date.now) {
-		Date.now = function() { return new Date().getTime(); };
-	}
-	
-	// ----------------------------------------------------------------
-	// ----------------------------------------------------------------
+    // ----------------------------------------------------------------
 
-	window.onload = function() {
+    if (!Date.now) {
+        Date.now = function() { return new Date().getTime(); };
+    }
 
-		var getClipboardText = function(e) {
+    /*
+     * 2015.10.20 15:38:55 marcelo: ignoreKeyEvents?
+     * Usa ignoreKeyEvents para desabilitar momentaneamente o processamento dos
+     * eventos de tecla durante processos demorados.
+     */
+    var ignoreKeyEvents = 0;
 
-			// window.clipboardData != null => IE 
-			var clipboardData = window.clipboardData ? window.clipboardData : e.clipboardData;
-			var dataType = window.clipboardData ? 'Text' : 'text/plain';
-			return clipboardData.getData(dataType);
-		};
-		
-		var setClipboardText = function(e, text) {
+    var disableKeyEvents = function() {
+        ignoreKeyEvents++;
+    };
 
-			// window.clipboardData != null => IE 
-			var clipboardData = window.clipboardData ? window.clipboardData : e.clipboardData;
-			var dataType = window.clipboardData ? 'Text' : 'text/plain';
-			clipboardData.setData(dataType, text);
-		};
-		
-		var cancelF1Keypress = false;
+    var enableKeyEvents = function() {
+        if (ignoreKeyEvents > 0) {
+            ignoreKeyEvents--;
+        }
+    };
 
-		document.body.onclick = function(e) {
-			EcoDisplayUI.showClipboard();
-			EcoDisplayUI.clipboard.focus();
-			EcoDisplayUI.clipboard.select();
-		};
+    var isKeyEventsEnabled = function() {
+        return (ignoreKeyEvents == 0);
+    };
 
-		document.body.addEventListener("cut", function handle_cut(e) {
+    // ----------------------------------------------------------------
+    // ----------------------------------------------------------------
 
-			/**
-			 * 2015.08.05 15:13:56 marcelo:
-			 * Havia optado por fazer o "cut" funcionar como o "copy" mas isso é inconsistente
-			 * com o eco que não tem suporte a "cut", por isso removi o suporte ao "cut/copy"
-			 */
-			e.preventDefault();
-		}, false);
+    window.onload = function() {
 
-		var lastCopy = 0;
-		
-		document.body.addEventListener("copy", function handle_copy(e) {
+        /*
+         * 2015.10.23 17:44:32 marcelo: retry?
+         * Pode ocorrer acesso negado ao tentar acessar o clipboard.
+         * Mudei getClipboardText() e setClipboardText() para algum mecanismo de
+         * retry e retornar sem derrubar a aplicação em caso de falha persistente.
+         */
+        var MAX_RETRY = 10;
 
-			var curCopy = Date.now();
-			
-			// ignora copy seguidos
-			if (curCopy - lastCopy > 500/*ms*/) {
-				
-			    if (clip.completou) {
-			        clip.isCopyGrande = false;
-			        clip.completou = false;
-			    }
+        var getClipboardText = function(event) {
 
-			    var status = clip.executaComandoCopia();
-				switch (status) {
+            var clipboard, dataType;
 
-					case EcoClipboard.COMANDO_COPIA_NENHUM:
-						break;
+            var result = '', done = false, retry = 0;
+            while (!done && (retry < MAX_RETRY)) {
+                try {
+                    // window.clipboardData != null => IE
+                    clipboard = window.clipboardData ? window.clipboardData : event.clipboardData;
+                    dataType = window.clipboardData ? 'Text' : 'text/plain';
+                    result = clipboard.getData(dataType);
+                    done = true;
+                    if (retry > 0) {
+                        console.log('getClipboardText: WARN recover=' + retry);
+                    }
+                } catch (err) {
+                    retry++;
+                    if (retry == MAX_RETRY) {
+                        console.log('getClipboardText: ERR ' + err);
+                    }
+                }
+            }
+            return result;
+        };
 
-					case EcoClipboard.COMANDO_COPIA_TRANSFERE_CLIPBOARD:
-						// atualiza o clipboard
-					    setClipboardText(e, clip.extraiDados());
-					    clip.completou = true;
-						msg.hideMessage();
-						
-						if (clip.isCopyGrande) {
-							/*
-							 * 2015.10.07 13:50:48 marcelo: setTimeout?
-							 * faz um reset no teclado para contornar um problema que ocorre
-							 * quando executa uma operação de copy demorada. 
-							 * O problema é frequente no IE10 ou anterior.
-							 */
-							setTimeout(function() {
-								EcoGuacamole.ConexaoGuac.guacKeyboard.reset();
-							}, /*timeout*/0);
-						}
-						break;
+        var setClipboardText = function(event, text) {
 
-					case EcoClipboard.COMANDO_COPIA_AGUARDA_VC:
-						// limpa conteúdo atual do clipboard
-						setClipboardText(e, "");
-						break;
+            var clipboard, dataType;
 
-					default:
-						// nada a fazer
-						console.log("document.body.oncopy: unexpected status=" + status);
-						break;
-				}
-			}
-			
-			lastCopy = curCopy;
-			
-			e.preventDefault();
-		}, false);
+            var result = '', done = false, retry = 0;
+            while (!done && (retry < MAX_RETRY)) {
+                try {
+                    // window.clipboardData != null => IE
+                    clipboard = window.clipboardData ? window.clipboardData : event.clipboardData;
+                    dataType = window.clipboardData ? 'Text' : 'text/plain';
+                    clipboard.setData(dataType, text);
+                    done = true;
+                    if (retry > 0) {
+                        console.log('setClipboardText: WARN recover=' + retry);
+                    }
+                } catch (err) {
+                    retry++;
+                    if (retry == MAX_RETRY) {
+                        console.log('setClipboardText: ERR ' + err);
+                    }
+                }
+            }
+        };
 
-		document.body.addEventListener("paste", function handle_paste(e) {
+        var cancelF1Keypress = false;
 
-			if (EcoDisplayUI.clipboard_integration_enabled) {
-				try {
-					var dados = getClipboardText(e);
-					clip.executaComandoColar(dados);
-					e.preventDefault();
-				} catch(e) {
-					msg.registraLog(e);
-				}
-			}
-		}, false);
+        document.body.onclick = function(event) {
+            EcoDisplayUI.showClipboard();
+            EcoDisplayUI.clipboard.focus();
+            EcoDisplayUI.clipboard.select();
+        };
 
-		/**
-		 * 2015.08.07 14:39:00 marcelo: onhelp?
-		 * Cancela o tratamento default do F1 do navegador, adaptado de http://goo.gl/6k5Xnm
-		 */
-		if ("onhelp" in window) { // Internet Explorer
-			window.onhelp = function () {
-				return false;
-			}
-		}
-		else { // outros navegadores
+        document.body.addEventListener("cut", function(event) {
 
-			document.onkeydown = function(evt) {
-				cancelF1Keypress = (evt.keyCode == 112);
-				if (cancelF1Keypress) {
-					return false;
-				}
-			}
+            /**
+             * 2015.08.05 15:13:56 marcelo:
+             * Havia optado por fazer o "cut" funcionar como o "copy" mas isso é inconsistente
+             * com o eco que não tem suporte a "cut", por isso removi o suporte ao "cut/copy"
+             */
+             event.preventDefault();
+        }, false);
 
-			if (browser.isOpera()) {
+        document.body.addEventListener("copy", function(event) {
 
-				document.onkeypress = function(evt) {
-					if (cancelF1Keypress) {
-						return false;
-					}
-				}
-			}
-		}
+            disableKeyEvents();
 
-		if (browser.getCookie('sign') != '__site_eco__') {
+            try {
+                if (clip.completou) {
+                    clip.isCopyGrande = false;
+                    clip.completou = false;
+                }
 
-			msg.registraLog('Direct access without authentication detected!');
-			var returnUrl = browser.getCookie('return');
-			browser.redirecionaParaURL(returnUrl ? returnUrl : EcoBrowser.ECO_SITE_URL);
-			return;
-		}
+                var status = clip.executaComandoCopia();
+                switch (status) {
 
-		// Destroi o cookie da assinatura
-		document.cookie = 'sign=__site_eco__; path=/' + VERSION + '; domain=economatica.com; secure=yes; expires=Thu, 01-Jan-1970 00:00:01 GMT';
+                    case EcoClipboard.COMANDO_COPIA_NENHUM:
+                        break;
 
-		// Verifica a compatibilidade do navegador
-		if (!browser.checkBrowserSuportaHTML5()) {
+                    case EcoClipboard.COMANDO_COPIA_TRANSFERE_CLIPBOARD:
+                        // atualiza o clipboard
+                        var dados = clip.extraiDados() || "";
+                        setClipboardText(event, dados);
 
-			browser.avisaUsuarioSobreNavegadorAntigo();
-			return;
-		}
+                        clip.completou = true;
 
-		// Exibe a mensagem de inicio da conexão
-		msg.showMessage(
-			msg.textLang(
-				'Aguarde...',
-				'Please wait...',
-				'Aguarde...'
-			),
-			msg.textLang(
-				'Inicializando a sessão do sistema Economatica',
-				'Logging in to Economatica',
-				'Iniciando sesión de Economatica'
-			),
-			'',
-			true
-		);
+                        msg.hideMessage();
 
-		EcoGuacamole.ConexaoGuac.setStatusWaitingApp();
-		EcoGuacamole.ConexaoGuac.token = GuacamoleService.Token.createToken();
-		EcoGuacamole.ConexaoGuac.connectGuac(new Guacamole.Client(EcoGuacamole.ConexaoGuac.criaTunnel()));
+                        if (clip.isCopyGrande) {
+                            /*
+                             * 2015.10.07 13:50:48 marcelo: setTimeout?
+                             * faz um reset no teclado para contornar um problema que ocorre
+                             * quando executa uma operação de copy demorada.
+                             * O problema é frequente no IE10 ou anterior.
+                             */
+                            setTimeout(function() {
+                                EcoGuacamole.ConexaoGuac.guacKeyboard.reset();
+                            }, /*timeout*/0);
+                        }
+                        break;
 
-		if (location.toString().indexOf('hideMessage') > -1) {
-			msg.hideMessage();
-		}
-	};
+                    case EcoClipboard.COMANDO_COPIA_AGUARDA_VC:
+                        // limpa conteúdo atual do clipboard
+                        setClipboardText(event, "");
+                        break;
 
-	window.onbeforeunload = function () {
-		msg.registraLog('Event beforeunload fired!');
-		return '';
-	};
+                    default:
+                        // nada a fazer
+                        console.log("document.body.oncopy: unexpected status=" + status);
+                        break;
+                }
+            } finally {
+
+                event.preventDefault();
+
+                setTimeout(function() {
+                    enableKeyEvents();
+                }, /*timeout*/0);
+            }
+        }, false);
+
+        document.body.addEventListener("paste", function(event) {
+
+            if (EcoDisplayUI.clipboard_integration_enabled) {
+                try {
+                    var dados = getClipboardText(event) || '';
+                    clip.executaComandoColar(dados);
+                    event.preventDefault();
+                } catch(err) {
+                    msg.registraLog(err);
+                }
+            }
+        }, false);
+
+        /**
+         * 2015.08.07 14:39:00 marcelo: onhelp?
+         * Cancela o tratamento default do F1 do navegador, adaptado de http://goo.gl/6k5Xnm
+         */
+        if ("onhelp" in window) { // Internet Explorer
+            window.onhelp = function () {
+                return false;
+            }
+        }
+        else { // outros navegadores
+
+            document.onkeydown = function(event) {
+                cancelF1Keypress = (event.keyCode == 112);
+                if (cancelF1Keypress) {
+                    return false;
+                }
+            }
+
+            if (browser.isOpera()) {
+
+                document.onkeypress = function(event) {
+                    if (cancelF1Keypress) {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        if (browser.getCookie('sign') != '__site_eco__') {
+
+            msg.registraLog('Direct access without authentication detected!');
+            var returnUrl = browser.getCookie('return');
+            browser.redirecionaParaURL(returnUrl ? returnUrl : EcoBrowser.ECO_SITE_URL);
+            return;
+        }
+
+        // Destroi o cookie da assinatura
+        document.cookie = 'sign=__site_eco__; path=/' + VERSION + '; domain=economatica.com; secure=yes; expires=Thu, 01-Jan-1970 00:00:01 GMT';
+
+        // Verifica a compatibilidade do navegador
+        if (!browser.checkBrowserSuportaHTML5()) {
+
+            browser.avisaUsuarioSobreNavegadorAntigo();
+            return;
+        }
+
+        // Exibe a mensagem de inicio da conexão
+        msg.showMessage(
+            msg.textLang(
+                'Aguarde...',
+                'Please wait...',
+                'Aguarde...'
+            ),
+            msg.textLang(
+                'Inicializando a sessão do sistema Economatica',
+                'Logging in to Economatica',
+                'Iniciando sesión de Economatica'
+            ),
+            '',
+            true
+        );
+
+        EcoGuacamole.ConexaoGuac.setStatusWaitingApp();
+        EcoGuacamole.ConexaoGuac.token = GuacamoleService.Token.createToken();
+        EcoGuacamole.ConexaoGuac.connectGuac(new Guacamole.Client(EcoGuacamole.ConexaoGuac.criaTunnel()));
+
+        if (location.toString().indexOf('hideMessage') > -1) {
+            msg.hideMessage();
+        }
+    };
+
+    window.onbeforeunload = function () {
+        msg.registraLog('Event beforeunload fired!');
+        return '';
+    };
 
 
-	window.close = window.onunload = function () {
+    window.close = window.onunload = function () {
 
-		msg.registraLog('Event unload fired!');
+        msg.registraLog('Event unload fired!');
 
-		if (EcoGuacamole.ConexaoGuac !== null) {
-			if (EcoGuacamole.ConexaoGuac.conexao !== null) {
-				EcoGuacamole.ConexaoGuac.encerrarSessao(false, 5000, true);
-			}
-		}
-	};
+        if (EcoGuacamole.ConexaoGuac !== null) {
+            if (EcoGuacamole.ConexaoGuac.conexao !== null) {
+                EcoGuacamole.ConexaoGuac.encerrarSessao(false, 5000, true);
+            }
+        }
+    };
 
-	function __update_layout() {
-		EcoGuacamole.ConexaoGuac.onRedimensionarTela = function(screen) {
-			window.scrollTo(screen.last_scroll_width, screen.last_scroll_height);
-		};
+    function __update_layout() {
+        EcoGuacamole.ConexaoGuac.onRedimensionarTela = function(screen) {
+            window.scrollTo(screen.last_scroll_width, screen.last_scroll_height);
+        };
 
-		EcoGuacamole.ConexaoGuac.atualizaTela(
-			document.body.scrollLeft,
-			document.body.scrollTop,
-			document.body.scrollWidth,
-			document.body.scrollHeight,
-			window.innerWidth,
-			window.innerHeight,
-			window.devicePixelRatio
-		);
-	}
+        EcoGuacamole.ConexaoGuac.atualizaTela(
+            document.body.scrollLeft,
+            document.body.scrollTop,
+            document.body.scrollWidth,
+            document.body.scrollHeight,
+            window.innerWidth,
+            window.innerHeight,
+            window.devicePixelRatio
+        );
+    }
 
-	/*
-	 * 2015.07.23 16:15:04 marcelo: debounce()?
-	 * A debounce() resolve o problema da __update_layout() ser disparada várias vezes durante o
-	 * processo de resize da janela do browser. debounce() usa um timeout para disparar menos vezes
-	 * __update_layout(), normalmente apenas uma vez após o término doprocesso de resize.
-	 *
-	 * ver: http://davidwalsh.name/javascript-debounce-function
-	 */
-	// Returns a function, that, as long as it continues to be invoked, will not
-	// be triggered. The function will be called after it stops being called for
-	// N milliseconds. If `immediate` is passed, trigger the function on the
-	// leading edge, instead of the trailing.
-	function debounce(func, wait_ms, immediate) {
-		var timeout;
-		return function() {
-			var context = this, args = arguments;
-			var later = function() {
-				timeout = null;
-				if (!immediate) {
-					func.apply(context, args);
-				}
-			};
-			var callNow = immediate && !timeout;
-			clearTimeout(timeout);
-			timeout = setTimeout(later, wait_ms);
-			if (callNow) {
-				func.apply(context, args);
-			}
-		};
-	}
+    /*
+     * 2015.07.23 16:15:04 marcelo: debounce()?
+     * A debounce() resolve o problema da __update_layout() ser disparada várias vezes durante o
+     * processo de resize da janela do browser. debounce() usa um timeout para disparar menos vezes
+     * __update_layout(), normalmente apenas uma vez após o término doprocesso de resize.
+     *
+     * ver: http://davidwalsh.name/javascript-debounce-function
+     */
+    // Returns a function, that, as long as it continues to be invoked, will not
+    // be triggered. The function will be called after it stops being called for
+    // N milliseconds. If `immediate` is passed, trigger the function on the
+    // leading edge, instead of the trailing.
+    function debounce(func, wait_ms, immediate) {
+        var timeout;
+        return function() {
+            var context = this, args = arguments;
+            var later = function() {
+                timeout = null;
+                if (!immediate) {
+                    func.apply(context, args);
+                }
+            };
+            var callNow = immediate && !timeout;
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait_ms);
+            if (callNow) {
+                func.apply(context, args);
+            }
+        };
+    }
 
-	window.onresize = debounce(__update_layout, /*wait_ms*/500);
-	</script>
+    window.onresize = debounce(__update_layout, /*wait_ms*/500);
+    </script>
 </body>
 </html>
