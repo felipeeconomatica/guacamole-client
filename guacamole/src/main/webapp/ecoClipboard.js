@@ -26,14 +26,6 @@ EcoClipboard.HEX_META = 0xFFEB;
 EcoClipboard.HEX_C = 0x63;
 EcoClipboard.HEX_V = 0x76;
 
-/**
- * 2015.08.06 14:18:40 marcelo: EcoClipboard.DUMMY_DATA?
- * Para o copy/paste funcionar precisa sempre ter um texto selecionado em um elemento HTML (por
- * exemplo, ver https://goo.gl/HoYXL4). Vamos usar EcoClipboard.DUMMY_DATA como sendo o texto
- * default que vai estar sempre selecionado.
- */
-EcoClipboard.DUMMY_DATA = "dummy data";
-
 EcoClipboard.prototype = {
 
     preparaClipboard: function () {
@@ -55,9 +47,9 @@ EcoClipboard.prototype = {
 
             EcoGuacamole.ConexaoGuac.clip.msg.showMessage('',
                 EcoGuacamole.ConexaoGuac.clip.msg.textLang(
-                    'Tecle ' + keyName + ' agora para concluir a cópia e espere até esta mensagem desaparecer (pode demorar alguns segundos).',
-                    'Press ' + keyName + ' now to complete the copy and wait until this message be closed (it may take a few seconds). ',
-                    'Oprima ' + keyName + ' ahora para completar la copia y espere hasta que se cierre este mensaje (puede tartar unos segundos).'
+                    'Tecle ' + keyName + ' novamente para concluir a cópia e espere até esta mensagem desaparecer (pode demorar alguns segundos).',
+                    'Press ' + keyName + ' again to complete the copy and wait until this message be closed (it may take a few seconds). ',
+                    'Oprima ' + keyName + ' de nuevo para completar la copia y espere hasta que se cierre este mensaje (puede tartar unos segundos).'
                 ), '', false, 0.5);
         }
         else {
@@ -129,8 +121,7 @@ EcoClipboard.prototype = {
     ehValorVazio: function () {
         return (
             (this._clipData == null) ||
-            (this._clipData.toString() === "") ||
-            (this._clipData.toString() === EcoClipboard.DUMMY_DATA)
+            (this._clipData.toString() === "")
         );
     },
 
@@ -252,6 +243,11 @@ EcoClipboard.prototype = {
             return function() {
                 that.ecoDisplay.setRemoteClipboard(dados);
                 that.enviaComandoDeColarParaServidor();
+                /*
+                 * 2015.10.27 16:03:15 marcelo: focusHiddenTextArea()?
+                 * O IE perde o foco após o paste.
+                 */
+                focusHiddenTextArea();
             };
         }(this, dados), 0);
     },

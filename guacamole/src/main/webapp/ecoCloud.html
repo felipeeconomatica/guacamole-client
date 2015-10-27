@@ -278,15 +278,31 @@ justin@justinaguilar.com
     // ----------------------------------------------------------------
     // -- Funções para Clipboard
     // ----------------------------------------------------------------
-    EcoGuacamole.ConexaoGuac.onDepoisDeConectar = function() {
-        EcoDisplayUI.showClipboard();
-    };
 
-    msg.onEventoForcaFoco = function () {
-        EcoDisplayUI.showClipboard();
-        EcoDisplayUI.clipboard.focus();
-        EcoDisplayUI.clipboard.select();
-    };
+    /**
+     * Coloca o foco de entrada no textarea invisível usado para permitir os evento oncopy e onpaste.
+     *
+     * https://www.lucidchart.com/techblog/2014/12/02/definitive-guide-copying-pasting-javascript/
+     */
+    var focusHiddenTextArea = function() {
+        var hidden = document.getElementById("clipbrd");
+        try {
+            /*
+             * 2015.10.27 15:51:59 marcelo: visibility?
+             * No IE e no Firefox o textarea precisa estar visível.
+             */
+            if (hidden.style.visibility == 'hidden') {
+                hidden.style.visibility = 'visible';
+            }
+            hidden.value = ' ';
+            hidden.focus();
+            hidden.select();
+        } catch (err) {
+            console.log("ERR focusHiddenTextArea: " + err);
+        }
+    }
+
+    msg.onEventoForcaFoco = focusHiddenTextArea;
 
     /**
      * Obtem os dados contidos no clipboard do servidor remoto através do Guacamole.
@@ -313,7 +329,6 @@ justin@justinaguilar.com
         }
     };
 
-    // TODO isto parece atualizar o textarea... ainda é usado? quando?
     GuacamoleSessionStorage.addChangeListener(function(name, value) {
         if (name === "clipboard") {
             EcoDisplayUI.setRemoteClipboard(value);
@@ -411,14 +426,9 @@ justin@justinaguilar.com
 
         var cancelF1Keypress = false;
 
-        document.body.onclick = function(event) {
-            EcoDisplayUI.showClipboard();
-            EcoDisplayUI.clipboard.focus();
-            EcoDisplayUI.clipboard.select();
-        };
-
         document.body.addEventListener("cut", function(event) {
 
+            focusHiddenTextArea();
             /**
              * 2015.08.05 15:13:56 marcelo:
              * Havia optado por fazer o "cut" funcionar como o "copy" mas isso é inconsistente
@@ -477,12 +487,12 @@ justin@justinaguilar.com
                 }
             } finally {
 
-                event.preventDefault();
-
                 setTimeout(function() {
                     enableKeyEvents();
                 }, /*timeout*/0);
             }
+            focusHiddenTextArea();
+            event.preventDefault();
         }, false);
 
         document.body.addEventListener("paste", function(event) {
@@ -491,14 +501,19 @@ justin@justinaguilar.com
                 try {
                     var dados = getClipboardText(event) || '';
                     clip.executaComandoColar(dados);
-                    event.preventDefault();
                 } catch(err) {
                     msg.registraLog(err);
                 }
             }
+            focusHiddenTextArea();
+            event.preventDefault();
         }, false);
 
-        /**
+        document.addEventListener("mouseup", function(event) {
+            focusHiddenTextArea();
+        }, false);
+
+        /*
          * 2015.08.07 14:39:00 marcelo: onhelp?
          * Cancela o tratamento default do F1 do navegador, adaptado de http://goo.gl/6k5Xnm
          */

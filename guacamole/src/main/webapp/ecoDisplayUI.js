@@ -8,8 +8,6 @@ var EcoDisplayUI = {
     "attachedClient"                : null,
     "main"                          : document.getElementById("main"),
     "display"                       : document.getElementById("display"),
-    // TODO este membro é necessário?
-    "clipboard"                     : document.getElementById("clipbrd"),
     "touchTextInput"                : document.getElementById("touchTextInput"),
     "auto_fit"                      : true,
     "min_zoom"                      : 1,
@@ -35,13 +33,6 @@ EcoDisplayUI.setRemoteClipboard = function (data) {
         }
     } else {
         console.log('[ECO] edui.sc: unable to set clipboard data, no attached client');
-    }
-};
-
-// TODO esta função é necessária?
-EcoDisplayUI.showClipboard = function() {
-    if (this.clipboard.style.visibility == 'hidden') {
-        this.clipboard.style.visibility = 'visible';
     }
 };
 
@@ -168,13 +159,6 @@ EcoDisplayUI.attach = function(guac) {
                 // Nada
 
         }
-    };
-
-    // TODO esta função é necessária?
-    guac_display.onclick = function(e) {
-        that.showClipboard();
-        that.clipboard.focus();
-        that.clipboard.select();
     };
 
     // Remove old client from UI, if any
