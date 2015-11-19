@@ -2,3 +2,17 @@
 target/
 nb-configuration.xml
 guacamole/customs.json
+
+# eclipse 
+.settings/
+.project
+.classpath
+.metadata
+
+# CVS
+cvs/
+.#*.*
+changelog
+
+# backups
+*.bak
