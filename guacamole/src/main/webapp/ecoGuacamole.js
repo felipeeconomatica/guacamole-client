@@ -291,38 +291,38 @@ EcoGuacamole.prototype = {
 
             this.guacKeyboard = new Guacamole.Keyboard(document);
 
-            var isCtrlCorCtrlV = function(keysym, allowCtrlV) {
+            var teclaControlAcionada = function() {
                 return (
-                    (
-                        (keysym === /*CTRL+C*/99)
-                        ||
-                        (allowCtrlV && (keysym === /*CTRL+V*/118))
-                    )
-                    &&
-                    (
-                            EcoGuacamole.ConexaoGuac.guacKeyboard.modifiers.ctrl // Win
-                            ||
-                            EcoGuacamole.ConexaoGuac.guacKeyboard.modifiers.meta // Mac
-                    )
-                    &&
-                    (!EcoGuacamole.ConexaoGuac.guacKeyboard.modifiers.alt)
-                    &&
-                    (!EcoGuacamole.ConexaoGuac.guacKeyboard.modifiers.shift)
-                );
+                        (
+                                EcoGuacamole.ConexaoGuac.guacKeyboard.modifiers.ctrl // Win
+                                ||
+                                EcoGuacamole.ConexaoGuac.guacKeyboard.modifiers.meta // Mac
+                        )
+                        &&
+                        (!EcoGuacamole.ConexaoGuac.guacKeyboard.modifiers.alt)
+                        &&
+                        (!EcoGuacamole.ConexaoGuac.guacKeyboard.modifiers.shift)
+                    );
             };
-
+            
             this.guacKeyboard.onkeydown = function (keysym) {
 
                 if (!isKeyEventsEnabled()) {
                     return false;
                 }
 
+                var isCtrlC = ( (keysym === /*CTRL+C*/99) && teclaControlAcionada() );
+                var isCtrlV = ( (keysym === /*CTRL+V*/118) && teclaControlAcionada() );
+
                 var esperandoCtrlCdoCopyGrande = (
                     EcoGuacamole.ConexaoGuac.clip.isCopyGrande
                     &&
                     !EcoGuacamole.ConexaoGuac.clip.completou
                 );
-                if (!esperandoCtrlCdoCopyGrande) {
+
+                // no caso do Ctrl-V, o tratamento de paste vai enviar o Ctrl-V
+                
+                if ( !(esperandoCtrlCdoCopyGrande || isCtrlV) ) {
 
                     try {
                         EcoGuacamole.ConexaoGuac.conexao.sendKeyEvent(1, keysym);
@@ -333,9 +333,10 @@ EcoGuacamole.prototype = {
                         /* ignora */
                     }
                 }
+                
 
                 // Se for Ctrl-C ou Ctrl-V o navegador também vai tratar as teclas senão fica só por conta do eco.
-                return isCtrlCorCtrlV(keysym, !esperandoCtrlCdoCopyGrande);
+                return ( isCtrlC || (isCtrlV && (!esperandoCtrlCdoCopyGrande)) );
             };
 
             this.guacKeyboard.onkeyup = function (keysym) {

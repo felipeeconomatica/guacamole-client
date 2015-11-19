@@ -250,15 +250,19 @@ EcoClipboard.prototype = {
 
         // manda os dados para o servidor remoto
         window.setTimeout(function(that, dados) {
-            return function() {
-                that.ecoDisplay.setRemoteClipboard(dados);
-                that.enviaComandoDeColarParaServidor();
-                /*
-                 * 2015.10.27 16:03:15 marcelo: focusHiddenTextArea()?
-                 * O IE perde o foco após o paste.
-                 */
-                focusHiddenTextArea();
-            };
+            return function(that) {
+            	that.ecoDisplay.setRemoteClipboard(dados);
+		        window.setTimeout(function(that) {
+		            return function() {
+		                that.enviaComandoDeColarParaServidor();
+		                /*
+		                 * 2015.10.27 16:03:15 marcelo: focusHiddenTextArea()?
+		                 * O IE perde o foco após o paste.
+		                 */
+		                focusHiddenTextArea();
+		            };
+		        }(this), 0);
+            }
         }(this, dados), 0);
     },
 
