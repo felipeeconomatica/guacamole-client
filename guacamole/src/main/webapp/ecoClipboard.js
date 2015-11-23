@@ -44,24 +44,24 @@ EcoClipboard.prototype = {
 
         if (EcoGuacamole.ConexaoGuac.clip.isCopyGrande && !EcoGuacamole.ConexaoGuac.clip.completou) {
             var keyName = EcoGuacamole.ConexaoGuac.clip.ecoBrowser.isMAC() ? 'COMMAND+C' : 'CTRL+C';
-			
-			if (EcoGuacamole.ConexaoGuac.clip._clipDataVC.toString() !== '') {
-				EcoGuacamole.ConexaoGuac.clip.msg.showMessage('',
-					EcoGuacamole.ConexaoGuac.clip.msg.textLang(
-						'Tecle ' + keyName + ' novamente para concluir a cópia e espere até esta mensagem desaparecer (pode demorar alguns segundos).',
-						'Press ' + keyName + ' again to complete the copy and wait until this message be closed (it may take a few seconds). ',
-						'Oprima ' + keyName + ' de nuevo para completar la copia y espere hasta que se cierre este mensaje (puede tartar unos segundos).'
-					), '', false, 0.5);		
-			}
-			else
-			{
-				//quando nao veio algo pelo VC, encerrar o copy. 
-				//ECO-2348, copia de conteudo vazio - screening, coluna "criar coluna" 
-				EcoGuacamole.ConexaoGuac.clip.completou = true;
-				EcoGuacamole.ConexaoGuac.clip.isCoyGrande = false;
-				this.msg.registraLog('[ECO] ec.finalizaCopia: _clipDataVC Vazio. Resetando vars isCopyGrande=false, complete=true');
-			}
-		}
+
+            if (EcoGuacamole.ConexaoGuac.clip._clipDataVC.toString() !== '') {
+                EcoGuacamole.ConexaoGuac.clip.msg.showMessage('',
+                    EcoGuacamole.ConexaoGuac.clip.msg.textLang(
+                        'Tecle ' + keyName + ' novamente para concluir a cópia e espere até esta mensagem desaparecer (pode demorar alguns segundos).',
+                        'Press ' + keyName + ' again to complete the copy and wait until this message be closed (it may take a few seconds). ',
+                        'Oprima ' + keyName + ' de nuevo para completar la copia y espere hasta que se cierre este mensaje (puede tartar unos segundos).'
+                    ), '', false, 0.5);
+            }
+            else
+            {
+                //quando nao veio algo pelo VC, encerrar o copy.
+                //ECO-2348, copia de conteudo vazio - screening, coluna "criar coluna"
+                EcoGuacamole.ConexaoGuac.clip.completou = true;
+                EcoGuacamole.ConexaoGuac.clip.isCoyGrande = false;
+                this.msg.registraLog('[ECO] ec.finalizaCopia: _clipDataVC Vazio. Resetando vars isCopyGrande=false, complete=true');
+            }
+        }
         else {
             if (!EcoGuacamole.ConexaoGuac.clip.isCopyGrande && !EcoGuacamole.ConexaoGuac.clip.completou) {
                 setTimeout(EcoGuacamole.ConexaoGuac.clip.finalizaCopia, 0);
@@ -249,21 +249,14 @@ EcoClipboard.prototype = {
         }
 
         // manda os dados para o servidor remoto
-        window.setTimeout(function(that, dados) {
-            return function(that) {
-            	that.ecoDisplay.setRemoteClipboard(dados);
-		        window.setTimeout(function(that) {
-		            return function() {
-		                that.enviaComandoDeColarParaServidor();
-		                /*
-		                 * 2015.10.27 16:03:15 marcelo: focusHiddenTextArea()?
-		                 * O IE perde o foco após o paste.
-		                 */
-		                focusHiddenTextArea();
-		            };
-		        }(this), 0);
-            }
-        }(this, dados), 0);
+        window.setTimeout(function(dados) {
+            return function() {
+                EcoGuacamole.ConexaoGuac.display.setRemoteClipboard(dados);
+                window.setTimeout(function() {
+                    EcoGuacamole.ConexaoGuac.clip.enviaComandoDeColarParaServidor();
+                }, 0);
+            };
+        }(dados), 0);
     },
 
     preparaCopyGrande: function() {

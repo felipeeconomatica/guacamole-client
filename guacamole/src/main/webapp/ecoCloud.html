@@ -510,7 +510,12 @@ justin@justinaguilar.com
         }, false);
 
         document.addEventListener("mouseup", function(event) {
-            focusHiddenTextArea();
+            /*
+             * 2015.11.23 16:21:00 Emerson: mouseup
+             * Os eventos do mouse nao funcionam junto com o Guacamole.
+             * Deve-se usar os eventos disponibilizados pelo Guacamole.Mouse, que atualmente eh criado no ecoGuacamole.js
+             * 
+             */
         }, false);
 
         /*

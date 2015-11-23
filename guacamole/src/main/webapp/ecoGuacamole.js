@@ -246,6 +246,11 @@ EcoGuacamole.prototype = {
             EcoGuacamole.ConexaoGuac.display.startAnimationTouchTextInput();
         };
 
+        var trataMouseUp = function (mouseState) {
+            trataMouseState(mouseState);
+            focusHiddenTextArea();
+        };
+
         // Associa o controle do mouse
         if (this.guacMouse !== null) {
             this.guacMouse = null;
@@ -260,11 +265,12 @@ EcoGuacamole.prototype = {
         this.guacTouch = new Guacamole.Mouse.Touchscreen(this.conexao.getDisplay().getElement());
 
         this.guacMouse.onmousedown =
-            this.guacMouse.onmouseup =
             this.guacMouse.onmousemove =
             this.guacTouch.onmousedown =
-            this.guacTouch.onmouseup =
             this.guacTouch.onmousemove = trataMouseState;
+
+        this.guacMouse.onmouseup =
+            this.guacTouch.onmouseup = trataMouseUp;
 
         this.guacMouse.onmouseout = function() {
             EcoGuacamole.ConexaoGuac.conexao.getDisplay().showCursor(false);
