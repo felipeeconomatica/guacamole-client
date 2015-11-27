@@ -254,7 +254,7 @@ EcoClipboard.prototype = {
                 EcoGuacamole.ConexaoGuac.display.setRemoteClipboard(dados);
                 window.setTimeout(function() {
                     EcoGuacamole.ConexaoGuac.clip.enviaComandoDeColarParaServidor();
-                }, 0);
+                }, 100+dados.length/100/*ms*/);
             };
         }(dados), 0);
     },
