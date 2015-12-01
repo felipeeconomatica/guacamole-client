@@ -75,7 +75,7 @@ body{
 }
 #msgTitle {
     font-family: Arial;
-    font-size: 14px;
+    font-size: 9pt;
     font-weight: bold;
     vertical-align: bottom;
     border-bottom: solid 2px #6A7898;
@@ -83,13 +83,13 @@ body{
 }
 #msgLabel {
     font-family: Arial;
-    font-size: 11px;
+    font-size: 9pt;
     vertical-align: top;
     color: #4C4C4C;
 }
 #msgText {
     font-family: Arial;
-    font-size: 11px;
+    font-size: 9pt;
     color: #000000;
     vertical-align: top;
 }
@@ -438,59 +438,68 @@ justin@justinaguilar.com
         }, false);
 
         document.body.addEventListener("copy", function(event) {
-
-            disableKeyEvents();
-
-            try {
-                if (clip.completou) {
-                    clip.isCopyGrande = false;
-                    clip.completou = false;
-                }
-
-                var status = clip.executaComandoCopia();
-                switch (status) {
-
-                    case EcoClipboard.COMANDO_COPIA_NENHUM:
-                        break;
-
-                    case EcoClipboard.COMANDO_COPIA_TRANSFERE_CLIPBOARD:
-                        // atualiza o clipboard
-                        var dados = clip.extraiDados() || "";
-                        setClipboardText(event, dados);
-
-                        clip.completou = true;
-
-                        msg.hideMessage();
-
-                        if (clip.isCopyGrande) {
-                            /*
-                             * 2015.10.07 13:50:48 marcelo: setTimeout?
-                             * faz um reset no teclado para contornar um problema que ocorre
-                             * quando executa uma operação de copy demorada.
-                             * O problema é frequente no IE10 ou anterior.
-                             */
-                            setTimeout(function() {
-                                EcoGuacamole.ConexaoGuac.guacKeyboard.reset();
-                            }, /*timeout*/0);
-                        }
-                        break;
-
-                    case EcoClipboard.COMANDO_COPIA_AGUARDA_VC:
-                        // limpa conteúdo atual do clipboard
-                        setClipboardText(event, "");
-                        break;
-
-                    default:
-                        // nada a fazer
-                        console.log("document.body.oncopy: unexpected status=" + status);
-                        break;
-                }
-            } finally {
-
-                setTimeout(function() {
-                    enableKeyEvents();
-                }, /*timeout*/0);
+            
+            if (clip.completou) {
+                clip.isCopyGrande = false;
+                clip.completou = false;
             }
+
+            var status = clip.executaComandoCopia();
+            switch (status) {
+
+                case EcoClipboard.COMANDO_COPIA_NENHUM:
+                    break;
+
+                case EcoClipboard.COMANDO_COPIA_TRANSFERE_CLIPBOARD:
+                    // atualiza o clipboard
+                    var dados = clip.extraiDados() || "";
+                    setClipboardText(event, dados);
+
+                    clip.completou = true;
+
+                    msg.hideMessage();
+
+                    if (clip.isCopyGrande) {
+                        /*
+                         * 2015.10.07 13:50:48 marcelo: setTimeout?
+                         * faz um reset no teclado para contornar um problema que ocorre
+                         * quando executa uma operação de copy demorada.
+                         * O problema é frequente no IE10 ou anterior.
+                         */
+                        setTimeout(function() {
+                            EcoGuacamole.ConexaoGuac.guacKeyboard.reset();
+                        }, /*timeout*/0);
+                    }
+                    
+                    /* 
+                     * Libera os eventos das teclas
+                     * O disable das teclas é feito ao ser feito o prepareCopy pelo Virtual Channel
+                     */
+                     if (!isKeyEventsEnabled()) { 
+                        setTimeout(function() {
+                            enableKeyEvents();
+                        }, /*timeout*/0);
+                    }    
+                    
+                    // Reseta para false a variavel que diz se o ciclo do copy grande está ativo
+                    if (clip.recebeuPreparaCopyGrande()) { 
+                        setTimeout(function() {
+                            clip.resetRecebeuPreparaCopyGrande();
+                        }, /*timeout*/0);
+                    }
+                    break;
+
+                case EcoClipboard.COMANDO_COPIA_AGUARDA_VC:
+                    // limpa conteúdo atual do clipboard
+                    setClipboardText(event, "");
+                    break;
+
+                default:
+                    // nada a fazer
+                    console.log("document.body.oncopy: unexpected status=" + status);
+                    break;
+            }
+
             focusHiddenTextArea();
             event.preventDefault();
         }, false);
@@ -591,7 +600,7 @@ justin@justinaguilar.com
 
     window.onbeforeunload = function () {
         msg.registraLog('Event beforeunload fired!');
-        return '';
+        return ' ';
     };
 
 

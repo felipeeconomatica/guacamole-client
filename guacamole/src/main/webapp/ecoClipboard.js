@@ -15,6 +15,7 @@ function EcoClipboard(msg, ecoDisplay, ecoBrowser) {
     this.isCopyGrande = false;
     this.completou = true;
     this.recebendoDadosVC = false;
+    var _recebeuPreparaCopyGrande = false;
 }
 
 EcoClipboard.COMANDO_COPIA_NENHUM = 0;
@@ -57,9 +58,14 @@ EcoClipboard.prototype = {
             {
                 //quando nao veio algo pelo VC, encerrar o copy.
                 //ECO-2348, copia de conteudo vazio - screening, coluna "criar coluna"
-                EcoGuacamole.ConexaoGuac.clip.completou = true;
-                EcoGuacamole.ConexaoGuac.clip.isCoyGrande = false;
-                this.msg.registraLog('[ECO] ec.finalizaCopia: _clipDataVC Vazio. Resetando vars isCopyGrande=false, complete=true');
+                EcoGuacamole.ConexaoGuac.clip.resetStates();
+                this.msg.registraLog(
+                    '[ECO] ec.finalizaCopia: _clipDataVC Vazio. Resetando vars isCopyGrande='
+                    + EcoGuacamole.ConexaoGuac.clip.isCopyGrande
+                    + ', '
+                    + ' complete=' 
+                    + EcoGuacamole.ConexaoGuac.clip.completou
+                );
             }
         }
         else {
@@ -199,6 +205,7 @@ EcoClipboard.prototype = {
                         "this.completou=" + this.completou
                         + " this.isCopyGrande=" + this.isCopyGrande
                         + " this.recebendoDadosVC=" + this.recebendoDadosVC
+                        + " this._recebeuPreparaCopyGrande=" + this._recebeuPreparaCopyGrande
                     );
                 }
             }
@@ -254,7 +261,7 @@ EcoClipboard.prototype = {
                 EcoGuacamole.ConexaoGuac.display.setRemoteClipboard(dados);
                 window.setTimeout(function() {
                     EcoGuacamole.ConexaoGuac.clip.enviaComandoDeColarParaServidor();
-                }, 100+dados.length/100/*ms*/);
+                }, 100+2*Math.ceil(dados.length/100)/*ms*/);
             };
         }(dados), 0);
     },
@@ -264,6 +271,14 @@ EcoClipboard.prototype = {
         this.msg.registraLog("(VC) Prepare copy");
         this.recebendoDadosVC = true;
         this.preparaClipboard();
+
+        if (!this._recebeuPreparaCopyGrande) {
+            this._recebeuPreparaCopyGrande = true;
+        }
+        
+        if (isKeyEventsEnabled()){
+            disableKeyEvents();
+        }
     },
 
     finalizaCopyGrande: function() {
@@ -282,5 +297,15 @@ EcoClipboard.prototype = {
     resetStates: function () {
         this.completou = true;
         this.isCopyGrande = false;
+        this._recebeuPreparaCopyGrande = false;
+        enableKeyEvents();
+    },
+    
+    recebeuPreparaCopyGrande: function () {
+        return this._recebeuPreparaCopyGrande;
+    },
+    
+    resetRecebeuPreparaCopyGrande: function () {
+        this._recebeuPreparaCopyGrande = false;
     }
 };

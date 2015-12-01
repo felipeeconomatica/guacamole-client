@@ -313,10 +313,6 @@ EcoGuacamole.prototype = {
             
             this.guacKeyboard.onkeydown = function (keysym) {
 
-                if (!isKeyEventsEnabled()) {
-                    return false;
-                }
-
                 var isCtrlC = ( (keysym === /*CTRL+C*/99) && teclaControlAcionada() );
                 var isCtrlV = ( (keysym === /*CTRL+V*/118) && teclaControlAcionada() );
 
@@ -324,6 +320,8 @@ EcoGuacamole.prototype = {
                     EcoGuacamole.ConexaoGuac.clip.isCopyGrande
                     &&
                     !EcoGuacamole.ConexaoGuac.clip.completou
+                    &&
+                    EcoGuacamole.ConexaoGuac.clip.recebeuPreparaCopyGrande()
                 );
 
                 // no caso do Ctrl-V, o tratamento de paste vai enviar o Ctrl-V

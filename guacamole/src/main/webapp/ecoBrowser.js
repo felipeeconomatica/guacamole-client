@@ -274,7 +274,8 @@ EcoBrowser.prototype = {
                         // Somente para o Chrome no PC (url ou mail)
                         setTimeout(function() {
                             if (popup.innerHeight === undefined || (popup.innerHeight > 0) === false || (popup.screenX > 0) === false) {
-                                this.alertPopup(url);
+                                EcoGuacamole.ConexaoGuac.browser.alertPopup(url);
+                                popup.close();
                             } else {
                                 if (isMailTo) {
                                     popup.window.open(url, '_blank', 'width=5,height=5').close();

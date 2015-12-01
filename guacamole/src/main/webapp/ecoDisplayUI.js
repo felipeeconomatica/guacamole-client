@@ -11,8 +11,7 @@ var EcoDisplayUI = {
     "touchTextInput"                : document.getElementById("touchTextInput"),
     "auto_fit"                      : true,
     "min_zoom"                      : 1,
-    "max_zoom"                      : 3,
-    "lastClipboardData"         : ""
+    "max_zoom"                      : 3
 };
 
 /**
@@ -25,12 +24,7 @@ EcoDisplayUI.setRemoteClipboard = function (data) {
 
     if (this.attachedClient) {
 
-        if (data !== this.lastClipboardData) {
-            this.attachedClient.setClipboard(data);
-            this.lastClipboardData = data;
-        } else {
-            // não precisa mandar novamente o valor para o servidor remoto, o valor já está no clipboard do servidor
-        }
+        this.attachedClient.setClipboard(data);
     } else {
         console.log('[ECO] edui.sc: unable to set clipboard data, no attached client');
     }
