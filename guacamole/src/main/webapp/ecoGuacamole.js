@@ -502,15 +502,35 @@ EcoGuacamole.prototype = {
     },
 
     parametrosDaSessaoRDP: function() {
-        return "username="        + Base64.decode(this.browser.getCookie('user')) + "&" +
-            "password="        + Base64.decode(this.browser.getCookie('pwd')) + "&" +
-            "hostname="        + this.browser.getCookie('server') + "&" +
-            "port="            + this.browser.getCookie('port') + "&" +
-            "remote-app="      + this.browser.getCookie('exe') + "&" +
-            "remote-app-args=" + this.browser.getCookie('args') + "&" +
-            "width="              + Math.floor(this.screenSize.optimal_width) + "&" +
-            "height="         + Math.floor(this.screenSize.optimal_height) + "&" +
-            "authToken="          + this.token.authToken;
+        var vaiParaSitePadrao = false;
+        
+        var userCookie = this.browser.getCookie('user');
+        if (userCookie === null) {
+            console.log("userCookie invalido!");
+            vaiParaSitePadrao = true;
+        }
+
+        var pwdCookie = this.browser.getCookie('pwd');        
+        if (pwdCookie === null) {
+            console.log("pwdCookie invalido!");
+            vaiParaSitePadrao = true;
+        }
+        
+        if (vaiParaSitePadrao) {
+            console.log("Chamando encerrarSessao(true, 0, true)");
+            this.encerrarSessao(true, 0, true);
+            return "";
+        }
+        
+        return  "username="        + Base64.decode(userCookie) + "&" +
+                "password="        + Base64.decode(pwdCookie) + "&" +
+                "hostname="        + this.browser.getCookie('server') + "&" +
+                "port="            + this.browser.getCookie('port') + "&" +
+                "remote-app="      + this.browser.getCookie('exe') + "&" +
+                "remote-app-args=" + this.browser.getCookie('args') + "&" +
+                "width="           + Math.floor(this.screenSize.optimal_width) + "&" +
+                "height="          + Math.floor(this.screenSize.optimal_height) + "&" +
+                "authToken="       + this.token.authToken;
     },
 
     calculaAlturaELarguraOtimizadas : function() {
@@ -963,6 +983,44 @@ EcoGuacamole.prototype = {
                 */
                 this.display.attachedClient.sendSize(main.offsetWidth, main.offsetHeight);
             }
+        }
+    },
+    
+    releaseModifiersKey : function(){
+        // Release alt if implicitly released
+        if (this.guacKeyboard.modifiers.alt) {
+            console.log("Efetando release da tecla ALT");
+            this.guacKeyboard.release(0xFFE9); // Left alt
+            this.guacKeyboard.release(0xFFEA); // Right alt
+            this.guacKeyboard.release(0xFE03); // AltGr
+        }
+
+        // Release shift if implicitly released
+        if (this.guacKeyboard.modifiers.shift) {
+            console.log("Efetando release da tecla SHIFT");
+            this.guacKeyboard.release(0xFFE1); // Left shift
+            this.guacKeyboard.release(0xFFE2); // Right shift
+        }
+
+        // Release ctrl if implicitly released
+        if (this.guacKeyboard.modifiers.ctrl) {
+            console.log("Efetando release da tecla CTRL");
+            this.guacKeyboard.release(0xFFE3); // Left ctrl 
+            this.guacKeyboard.release(0xFFE4); // Right ctrl 
+        }
+
+        // Release meta if implicitly released
+        if (this.guacKeyboard.modifiers.meta) {
+            console.log("Efetando release da tecla META");
+            this.guacKeyboard.release(0xFFE7); // Left meta 
+            this.guacKeyboard.release(0xFFE8); // Right meta 
+        }
+
+        // Release hyper if implicitly released
+        if (this.guacKeyboard.modifiers.hyper) {
+            console.log("Efetando release da tecla HYPER");
+            this.guacKeyboard.release(0xFFEB); // Left hyper
+            this.guacKeyboard.release(0xFFEC); // Right hyper
         }
     }
 };

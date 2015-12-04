@@ -514,7 +514,9 @@ justin@justinaguilar.com
                     msg.registraLog(err);
                 }
             }
-            focusHiddenTextArea();
+            setTimeout(function () {
+                focusHiddenTextArea();
+            }, 0);
             event.preventDefault();
         }, false);
 
@@ -527,6 +529,15 @@ justin@justinaguilar.com
              */
         }, false);
 
+        /*
+         * Quando a janela do navegador perde o foco (ex.: ao teclas ALT+TAB), as vezes, algumas variáveis do atributo modifier 
+         * do Guacamole.Keyboard ficam presas como se as teclas ALT, CTRL, SHIFT, META OU HYPER estivem pressionadas, 
+         * então precisa resetar estas teclas quando a janela perde o foco.
+         */
+        window.addEventListener("blur", function () {
+            EcoGuacamole.ConexaoGuac.releaseModifiersKey();
+        }, false);
+        
         /*
          * 2015.08.07 14:39:00 marcelo: onhelp?
          * Cancela o tratamento default do F1 do navegador, adaptado de http://goo.gl/6k5Xnm
