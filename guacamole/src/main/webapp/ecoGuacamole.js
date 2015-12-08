@@ -217,9 +217,6 @@ EcoGuacamole.prototype = {
 
         this.registraHandlers();
 
-        // Calcula a largura/altura otimizada
-        this.calculaAlturaELarguraOtimizadas();
-
         // Define a string com os parâmetros da sessão RDP e conecta
         this.conexao.connect(this.parametrosDaSessaoRDP());
 
@@ -528,24 +525,9 @@ EcoGuacamole.prototype = {
                 "port="            + this.browser.getCookie('port') + "&" +
                 "remote-app="      + this.browser.getCookie('exe') + "&" +
                 "remote-app-args=" + this.browser.getCookie('args') + "&" +
-                "width="           + Math.floor(this.screenSize.optimal_width) + "&" +
-                "height="          + Math.floor(this.screenSize.optimal_height) + "&" +
+                "width="           + Math.floor(window.innerWidth) + "&" +
+                "height="          + Math.floor(window.innerHeight) + "&" +
                 "authToken="       + this.token.authToken;
-    },
-
-    calculaAlturaELarguraOtimizadas : function() {
-        this.screenSize.pixel_density = window.devicePixelRatio || 1;
-        this.screenSize.optimal_width = (window.innerWidth - 4) * this.screenSize.pixel_density;
-        this.screenSize.optimal_height = (window.innerHeight - 4) * this.screenSize.pixel_density;
-    },
-
-    defineAlturaLarguraMinima : function(largura, altura) {
-        if (this.screenSize.optimal_width < largura || this.screenSize.optimal_height < altura) {
-            var scale = Math.max(largura / this.screenSize.optimal_width, altura / this.screenSize.optimal_height);
-
-            this.screenSize.optimal_width = this.screenSize.optimal_width * scale;
-            this.screenSize.optimal_height = this.screenSize.optimal_height * scale;
-        }
     },
 
     encerrarSessao : function (gotoSiteEco, timeout, terminate) {

@@ -85,8 +85,8 @@ EcoDisplayUI.updateDisplayScale = function() {
 
     // Calculate scale to fit screen
     this.min_zoom = Math.min(
-        this.main.offsetWidth  / Math.max(guac.getDisplay().getWidth(), 1),
-        this.main.offsetHeight / Math.max(guac.getDisplay().getHeight(), 1)
+        Math.floor(this.main.offsetWidth)  / Math.max(Math.floor(guac.getDisplay().getWidth()), 1),
+        Math.floor(this.main.offsetHeight) / Math.max(Math.floor(guac.getDisplay().getHeight()), 1)
     );
 
     // Calculate appropriate maximum zoom level
