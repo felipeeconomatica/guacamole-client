@@ -27,201 +27,217 @@ import com.google.inject.Singleton;
 /**
  * Classe com utilidades comuns na extensão do Guacamole para a Economatica
  *
- * @see			http://guac-dev.org/
+ * @see         http://guac-dev.org/
  *
- * @copyright	(2014) Economatica Software de Apoio a Investidores Ltda.
- * @author		Felipe Francesco P. L. da Costa <felipe@economatica.com.br>
- * @since		2014-09-19
+ * @copyright   (2014) Economatica Software de Apoio a Investidores Ltda.
+ * @author      Felipe Francesco P. L. da Costa <felipe@economatica.com.br>
+ * @since       2014-09-19
  */
 @Singleton
 public class EconomaticaGuacamoleUtils  {
 
-	private final Logger logger = LoggerFactory.getLogger(EconomaticaGuacamoleUtils.class);
+    private final Logger logger = LoggerFactory.getLogger(EconomaticaGuacamoleUtils.class);
 
-	@Inject
-	private AuthenticationService authenticationService;
+    @Inject
+    private AuthenticationService authenticationService;
 
-	public static GuacamoleConfiguration configureConnection(HttpServletRequest request) {
+    public static GuacamoleConfiguration configureConnection(HttpServletRequest request) {
 
-		String username = request.getParameter("username");
-		String password = request.getParameter("password");
-		String hostname = request.getParameter("hostname");
-		String port = request.getParameter("port");
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        String hostname = request.getParameter("hostname");
+        String port = request.getParameter("port");
 
-		String remoteApp = request.getParameter("remote-app");
-		String remoteAppArgs = request.getParameter("remote-app-args");
-		String width = request.getParameter("width");
-		String height = request.getParameter("height");
+        String remoteApp = request.getParameter("remote-app");
+        String remoteAppArgs = request.getParameter("remote-app-args");
+        String width = request.getParameter("width");
+        String height = request.getParameter("height");
 
-		GuacamoleConfiguration config = new GuacamoleConfiguration();
+        GuacamoleConfiguration config = new GuacamoleConfiguration();
 
-		config.setProtocol("rdp");
-		config.setParameter("hostname", hostname);
-		config.setParameter("port", port);
-		config.setParameter("username", username);
-		config.setParameter("password", password);
-		config.setParameter("width", width);
-		config.setParameter("height", height);
-		config.setParameter("disable-audio", "true");
-		config.setParameter("enable-printing", "false");
-		config.setParameter("color-depth", "32");
+        config.setProtocol("rdp");
+        config.setParameter("hostname", hostname);
+        config.setParameter("port", port);
+        config.setParameter("username", username);
+        config.setParameter("password", password);
+        config.setParameter("width", width);
+        config.setParameter("height", height);
+        config.setParameter("disable-audio", "true");
+        config.setParameter("enable-printing", "false");
+        config.setParameter("color-depth", "32");
 
- 		if (remoteApp != "") {
-			config.setParameter("static-channels", "SPARK");
-		}
+        if (remoteApp != "") {
+            config.setParameter("static-channels", "SPARK");
+        }
 
-		if (remoteAppArgs != "") {
-			config.setParameter("remote-app-args", remoteAppArgs);
-		}
+        if (remoteAppArgs != "") {
+            config.setParameter("remote-app-args", remoteAppArgs);
+        }
 
-		config.setParameter("server-layout", "en-us-qwerty");
+        config.setParameter("server-layout", "en-us-qwerty");
 
-		return config;
-	}
+        return config;
+    }
 
-	public GuacamoleTunnel criaTunnelGuacamole(HttpServletRequest request) throws GuacamoleException {
+    public GuacamoleTunnel criaTunnelGuacamole(HttpServletRequest request) throws GuacamoleException {
 
-		// Estabelece a conexão com o guacd
-		// Observe que esta conexão é feita em localhost, pois o mesmo local em que o
-		// servlet está sendo executado, também existe um daemon guacd.	}
+        // Estabelece a conexão com o guacd
+        // Observe que esta conexão é feita em localhost, pois o mesmo local em que o
+        // servlet está sendo executado, também existe um daemon guacd. }
         GuacamoleSocket socket = null;
         try {
             socket = new ConfiguredGuacamoleSocket(
-            		new EconomaticaGuacamoleSocket("localhost", 4822),
-            		configureConnection(request)
-            	);
-			logger.info("[EGU.cTG] connected to guacd");
-		} catch (GuacamoleException e) {
-	        logger.error("[EGU.cTG] socket exception, is guacd alive?");
-	        throw e;
-		}
+                    new EconomaticaGuacamoleSocket("localhost", 4822),
+                    configureConnection(request)
+                );
+            logger.info("[EGU.cTG] connected to guacd");
+        } catch (GuacamoleException e) {
+            logger.error("[EGU.cTG] socket exception, is guacd alive?");
+            throw e;
+        }
 
-		String authToken = request.getParameter("authToken");
+        String authToken = request.getParameter("authToken");
         logger.debug("[EGU.cTG] authToken:" + authToken);
 
-		if (authenticationService != null) {
+        if (authenticationService != null) {
 
-			logger.debug("[EGU.cTG] authenticationService:" + authenticationService.toString());
+            logger.debug("[EGU.cTG] authenticationService:" + authenticationService.toString());
 
-			final GuacamoleSession session = authenticationService.getGuacamoleSession(authToken);
+            final GuacamoleSession session = authenticationService.getGuacamoleSession(authToken);
 
-			logger.info("[EGU.cTG] creating tunnel...");
+            logger.info("[EGU.cTG] creating tunnel...");
 
-			GuacamoleTunnel tunnel = new EconomaticaTunnel(socket) {
-				@Override
-				public GuacamoleReader acquireReader() {
-					ClipboardState clipboard = session.getClipboardState();
-					return new MonitoringGuacamoleReader(clipboard, super.acquireReader());
-				}
-			};
+            GuacamoleTunnel tunnel = new EconomaticaTunnel(socket) {
 
-			logger.info("[EGU.cTG] ...tunnel created");
+                @Override
+                public GuacamoleReader acquireReader() {
+                    ClipboardState clipboard = session.getClipboardState();
+                    return new MonitoringGuacamoleReader(clipboard, super.acquireReader());
+                }
 
-			session.addTunnel(tunnel);
+                @Override
+                public void close() throws GuacamoleException {
 
-			logger.info("[EGU.cTG] tunnel associated with session");
+                    String uuid = getUUID().toString();
 
-	        return tunnel;
-		}
-		else {
-			logger.warn("[EGU.cTG] null authenticationService");
-		}
+                    logger.info("closing session {}...", uuid);
+
+                    session.removeTunnel(uuid);
+
+                    // Close if no exception due to listener
+                    super.close();
+
+                    logger.info("...session {} closed", uuid);
+                }
+            };
+
+            logger.info("[EGU.cTG] ...tunnel created");
+
+            session.addTunnel(tunnel);
+
+            logger.info("[EGU.cTG] tunnel associated with session");
+
+            return tunnel;
+        }
+        else {
+            logger.warn("[EGU.cTG] null authenticationService");
+        }
 
         return null;
-	}
+    }
 
-	private class EconomaticaTunnel implements GuacamoleTunnel {
+    private class EconomaticaTunnel implements GuacamoleTunnel {
 
-	    /**
-	     * Logger for this class.
-	     */
-	    private Logger logger = LoggerFactory.getLogger(EconomaticaTunnel.class);
+        /**
+         * Logger for this class.
+         */
+        private Logger logger = LoggerFactory.getLogger(EconomaticaTunnel.class);
 
-	    /**
-	     * The UUID associated with this tunnel. Every tunnel must have a
-	     * corresponding UUID such that tunnel read/write requests can be
-	     * directed to the proper tunnel.
-	     */
-	    private UUID uuid;
+        /**
+         * The UUID associated with this tunnel. Every tunnel must have a
+         * corresponding UUID such that tunnel read/write requests can be
+         * directed to the proper tunnel.
+         */
+        private UUID uuid;
 
-	    /**
-	     * The GuacamoleSocket that tunnel should use for communication on
-	     * behalf of the connecting user.
-	     */
-	    private GuacamoleSocket socket;
+        /**
+         * The GuacamoleSocket that tunnel should use for communication on
+         * behalf of the connecting user.
+         */
+        private GuacamoleSocket socket;
 
-	    /**
-	     * Lock acquired when a read operation is in progress.
-	     */
-	    private ReentrantLock readerLock;
+        /**
+         * Lock acquired when a read operation is in progress.
+         */
+        private ReentrantLock readerLock;
 
-	    /**
-	     * Lock acquired when a write operation is in progress.
-	     */
-	    private ReentrantLock writerLock;
+        /**
+         * Lock acquired when a write operation is in progress.
+         */
+        private ReentrantLock writerLock;
 
-	    /**
-	     * Creates a new GuacamoleTunnel which synchronizes access to the
-	     * Guacamole instruction stream associated with the given GuacamoleSocket.
-	     *
-	     * @param socket The GuacamoleSocket to provide synchronized access for.
-	     */
-		EconomaticaTunnel(GuacamoleSocket socket) {
+        /**
+         * Creates a new GuacamoleTunnel which synchronizes access to the
+         * Guacamole instruction stream associated with the given GuacamoleSocket.
+         *
+         * @param socket The GuacamoleSocket to provide synchronized access for.
+         */
+        EconomaticaTunnel(GuacamoleSocket socket) {
 
-			this.socket = socket;
-			uuid = UUID.randomUUID();
+            this.socket = socket;
+            uuid = UUID.randomUUID();
 
-			readerLock = new ReentrantLock();
-			writerLock = new ReentrantLock();
+            readerLock = new ReentrantLock();
+            writerLock = new ReentrantLock();
 
-			logger.info("[EGU.ET] tunnel created");
-		}
+            logger.info("[EGU.ET] tunnel created");
+        }
 
-		public GuacamoleReader acquireReader() {
-			readerLock.lock();
-	        return socket.getReader();
-		}
+        public GuacamoleReader acquireReader() {
+            readerLock.lock();
+            return socket.getReader();
+        }
 
-		public void releaseReader() {
-	        readerLock.unlock();
+        public void releaseReader() {
+            readerLock.unlock();
 
-		}
+        }
 
-		public boolean hasQueuedReaderThreads() {
-	        return readerLock.hasQueuedThreads();
-		}
+        public boolean hasQueuedReaderThreads() {
+            return readerLock.hasQueuedThreads();
+        }
 
-		public GuacamoleWriter acquireWriter() {
-	        writerLock.lock();
-	        return socket.getWriter();
-		}
+        public GuacamoleWriter acquireWriter() {
+            writerLock.lock();
+            return socket.getWriter();
+        }
 
-		public void releaseWriter() {
-	        writerLock.unlock();
-		}
+        public void releaseWriter() {
+            writerLock.unlock();
+        }
 
-		public boolean hasQueuedWriterThreads() {
-	        return writerLock.hasQueuedThreads();
-		}
+        public boolean hasQueuedWriterThreads() {
+            return writerLock.hasQueuedThreads();
+        }
 
-		public UUID getUUID() {
-	        return this.uuid;
-		}
+        public UUID getUUID() {
+            return this.uuid;
+        }
 
-		public GuacamoleSocket getSocket() {
-	        return socket;
-		}
+        public GuacamoleSocket getSocket() {
+            return socket;
+        }
 
-		public void close() throws GuacamoleException {
+        public void close() throws GuacamoleException {
 
-	        socket.close();
+            socket.close();
 
-			logger.info("[EGU.ET] tunnel closed");
-		}
+            logger.info("socket closed");
+        }
 
-		public boolean isOpen() {
-	        return socket.isOpen();
-		}
+        public boolean isOpen() {
+            return socket.isOpen();
+        }
 
-	}
+    }
 }
