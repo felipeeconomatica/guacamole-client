@@ -116,16 +116,20 @@ public class EconomaticaGuacamoleUtils  {
                 }
 
                 @Override
-                public void close() throws GuacamoleException {
+                public void close() {
 
                     String uuid = getUUID().toString();
 
                     logger.info("closing session {}...", uuid);
 
-                    session.removeTunnel(uuid);
-
-                    // Close if no exception due to listener
-                    super.close();
+                    try {
+                        session.removeTunnel(uuid);
+                        super.close();
+                    } catch (GuacamoleException e) {
+                        logger.error("failed to close tunnel associated to session " + uuid, e);
+                    } catch (Exception e) {
+                        logger.error("unexpected error while closing tunnel associated to session " + uuid, e);
+                    }
 
                     logger.info("...session {} closed", uuid);
                 }
