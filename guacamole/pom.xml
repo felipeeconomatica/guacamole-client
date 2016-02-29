@@ -48,6 +48,7 @@
     </properties>
 
     <build>
+        <finalName>ecoWeb</finalName>
         <plugins>
 
             <!-- Written for 1.6 -->
