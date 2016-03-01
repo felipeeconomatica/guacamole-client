@@ -48,7 +48,8 @@
     </properties>
 
     <build>
-        <finalName>ecoWeb</finalName>
+        <!-- optamos por um nome fora do padrão do maven para facilitar o build.bat do eco -->
+        <finalName>ecoweb</finalName>
         <plugins>
 
             <!-- Written for 1.6 -->
